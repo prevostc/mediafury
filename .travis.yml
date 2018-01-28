@@ -4,8 +4,10 @@ language: java
 jdk:
  - oraclejdk8
 script:
+ - cd server
  - mvn verify -B
 after_script:
+ - cd server
  - mvn jacoco:report
  # @todo: use com.codaciy:codacy-coverage-reporter?
  - java -cp codacy-coverage-reporter-2.0.2-assembly.jar com.codacy.CodacyCoverageReporter -l Java -r ./target/site/jacoco/jacoco.xml --projectToken $CODACY_PROJECT_TOKEN
