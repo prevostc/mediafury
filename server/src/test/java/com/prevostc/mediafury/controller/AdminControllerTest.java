@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.controller;
 
 import com.prevostc.mediafury.config.ApiSecurityConfiguration;
+import com.prevostc.mediafury.config.AuthenticationEntryPoint;
 import com.prevostc.mediafury.config.CorsConfiguration;
 import com.prevostc.mediafury.model.Movie;
 import com.prevostc.mediafury.repository.MovieRepository;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AdminController.class)
-@Import({ ApiSecurityConfiguration.class, CorsConfiguration.class })
+@Import({ ApiSecurityConfiguration.class, AuthenticationEntryPoint.class })
 public class AdminControllerTest {
 
     @Autowired

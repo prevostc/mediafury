@@ -6,7 +6,7 @@ jdk:
 script:
  - cd server
  - mvn verify -B
-after_script:
+after_success:
  - cd server
  - mvn jacoco:report
  # @todo: use com.codaciy:codacy-coverage-reporter?

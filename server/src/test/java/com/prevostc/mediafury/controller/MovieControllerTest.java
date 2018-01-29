@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.controller;
 
 import com.prevostc.mediafury.config.ApiSecurityConfiguration;
+import com.prevostc.mediafury.config.AuthenticationEntryPoint;
 import com.prevostc.mediafury.repository.MovieRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MovieController.class)
-@Import(ApiSecurityConfiguration.class)
+@Import({ ApiSecurityConfiguration.class, AuthenticationEntryPoint.class })
 public class MovieControllerTest {
 
     @Autowired
