@@ -17,10 +17,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -65,6 +68,27 @@ public class AdminControllerTest {
             new Movie("Kung 2", "Fury")
         ));
         when(movieRepository.findAll(any(PageRequest.class))).thenReturn(res);
+
+        //Act
+        ResultActions result = mvc.perform(
+            get("/admin/movies").with(user("user").password("").roles("USER", "ADMIN"))
+        );
+
+        //Assert
+        result.andExpect(status().is(200));
+    }
+
+
+    @Test
+    public void listAll_shouldPaginate() throws Exception {
+
+        //Arrange
+        List<Movie> data = new ArrayList<>();
+        for (int i = 0 ; i < 20 ; i++) {
+            data.add(new Movie("Kung Fury ".concat(String.valueOf(i)) , "The best kung fury to date"));
+        }
+        Page<Movie> res = new PageImpl<>(data);
+        when(movieRepository.findAll(same(new PageRequest(2, 5)))).thenReturn(res);
 
         //Act
         ResultActions result = mvc.perform(

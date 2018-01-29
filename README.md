@@ -23,6 +23,7 @@ TODO
     ** Deploy to docker (+config as env)
     ** Configure CORS + unit tests
     ** Configure CSRF + unit tests
+    ** Move security-related tests to e2e tests ?
     * Admin
     ** Add login errors on login form
     ** Login hints
