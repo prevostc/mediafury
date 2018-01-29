@@ -52,7 +52,7 @@ public class AdminControllerTest {
         ResultActions result = mvc.perform(get("/admin/movies").with(anonymous()));
 
         //Assert
-        result.andExpect(status().is(403));
+        result.andExpect(status().is(401));
     }
 
 
@@ -68,7 +68,7 @@ public class AdminControllerTest {
 
         //Act
         ResultActions result = mvc.perform(
-                get("/admin/movies").with(user("user").password("").roles("USER", "ADMIN"))
+            get("/admin/movies").with(user("user").password("").roles("USER", "ADMIN"))
         );
 
         //Assert
