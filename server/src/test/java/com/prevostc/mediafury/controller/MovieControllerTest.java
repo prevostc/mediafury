@@ -1,11 +1,13 @@
 package com.prevostc.mediafury.controller;
 
+import com.prevostc.mediafury.config.ApiSecurityConfiguration;
 import com.prevostc.mediafury.repository.MovieRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -18,13 +20,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MovieController.class)
+@Import(ApiSecurityConfiguration.class)
 public class MovieControllerTest {
-
-    @Autowired
-    private MovieController movieController;
 
     @Autowired
     private MockMvc mvc;
@@ -40,7 +41,7 @@ public class MovieControllerTest {
         when(movieRepository.findByTitleIgnoreCase(anyString())).thenReturn(movie);
 
         //Act
-        ResultActions result = mvc.perform(get("/movie").param("title", "kung"));
+        ResultActions result = mvc.perform(get("/api/movies").param("title", "kung").with(anonymous()));
 
         //Assert
         result.andExpect(status().isOk())
@@ -57,7 +58,7 @@ public class MovieControllerTest {
         when(movieRepository.findByTitleIgnoreCase(anyString())).thenReturn(movie);
 
         //Act
-        ResultActions result = mvc.perform(get("/movie").param("title", "kung"));
+        ResultActions result = mvc.perform(get("/api/movies").param("title", "kung").with(anonymous()));
 
         //Assert
         result.andExpect(status().isOk())

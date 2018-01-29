@@ -26,10 +26,13 @@ public class MovieRepositoryTest {
 
     @Test
     public void findByTitleIgnoreCase_shouldBeCaseInsensitive() {
+        // Arrange
         movieRepository.save(new Movie("Kung", "Fury"));
 
+        // Act
         Optional<Movie> movie = movieRepository.findByTitleIgnoreCase("kung");
 
+        // Assert
         assertThat(movie.isPresent()).isTrue();
         assertThat(movie.get().getTitle()).isEqualTo("Kung");
     }

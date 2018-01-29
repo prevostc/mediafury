@@ -9,11 +9,6 @@ import java.util.Optional;
 @Repository
 public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
 
-    /**
-     * Case insensitive movie search by title
-     * @param title A title to match on
-     * @return Optional<Movie> The matched movie
-     */
     Optional<Movie> findByTitleIgnoreCase(String title);
 }
 

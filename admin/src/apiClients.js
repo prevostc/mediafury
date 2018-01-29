@@ -1,34 +1,41 @@
-import { AUTH_LOGIN, fetchUtils, simpleRestClient } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK, GET_LIST, fetchUtils } from 'admin-on-rest';
+import { API_URL } from './config';
+
+const makeUrl = (resource) => `${API_URL}/${resource}`;
 
 export const httpClient = (url, options = {}) => {
-    if (!options.headers) {
-        options.headers = new Headers({ Accept: 'application/json' });
-    }
     const token = localStorage.getItem('token');
-    options.headers.set('Authorization', `Bearer ${token}`);
+    options.user = {
+        authenticated: true,
+        token: token
+    }
     return fetchUtils.fetchJson(url, options);
 };
 
-export const restClient = simpleRestClient('http://localhost:3000', httpClient);
+export const restClient = (type, resource, params) => {
+    switch (type) {
+        case GET_LIST:
+            return httpClient(makeUrl(resource))
+                .then((res) => {
+                    console.log(res)
+                    return { data: res.json.content, total: res.json.totalElements }
+                });
+        default:
+            throw new Error(`${type} not implemented for resource ${resource}`)
+    }
+};
 
 export const authClient = (type, params) => {
     if (type === AUTH_LOGIN) {
         const { username, password } = params;
-        const request = new Request('https://mydomain.com/authenticate', {
-            method: 'POST',
-            body: JSON.stringify({ username, password }),
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-        })
-        return fetch(request)
-            .then(response => {
-                if (response.status < 200 || response.status >= 300) {
-                    throw new Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(({ token }) => {
-                localStorage.setItem('token', token);
-            });
+        const token = btoa(`${username}:${password}`);
+        localStorage.setItem('token', `Basic ${token}`);
+        console.log(token)
+    } else if (type === AUTH_LOGOUT) {
+        localStorage.clear();
+        return Promise.resolve();
+    } else if (type === AUTH_CHECK) {
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     return Promise.resolve();
 };

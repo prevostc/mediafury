@@ -9,4 +9,6 @@ public class MediafuryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MediafuryApplication.class, args);
 	}
+
 }
+

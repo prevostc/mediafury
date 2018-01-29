@@ -10,3 +10,24 @@ Media Fury
     Awesome medias from the 80s
     Mainly a pet project to test the Spring + Angular Stack
 
+TODO
+====
+
+    * Api
+    ** Api versonning
+    ** Api doc (springfox + springfox ui)
+    ** Better auth method
+    ** GraphQL ?
+    ** Caching
+    ** Proper SQL Database
+    ** Deploy to docker (+config as env)
+    ** Configure CORS + unit tests
+    ** Configure CSRF + unit tests
+    * Admin
+    ** Add login errors on login form
+    ** Login hints
+    ** Auth storage service
+    ** apiClient tests
+    ** End to end tests
+    * Client app
+    ** Everything

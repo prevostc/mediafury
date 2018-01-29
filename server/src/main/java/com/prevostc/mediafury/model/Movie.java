@@ -11,8 +11,10 @@ public class Movie {
 
     @Id
     @GeneratedValue
+    @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("title")
     private String title;
 
     @JsonProperty("description")
