@@ -1,7 +1,9 @@
 package com.prevostc.mediafury.repository;
 
+import com.prevostc.mediafury.config.JpaConfiguration;
 import com.prevostc.mediafury.model.Movie;
 import org.junit.runner.RunWith;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.junit.After;
@@ -14,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@Import(JpaConfiguration.class)
 public class MovieRepositoryTest {
 
     @After

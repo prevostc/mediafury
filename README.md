@@ -32,3 +32,6 @@ TODO
     ** End to end tests
     * Client app
     ** Everything
+    * More
+    ** Split api and user-facing, communicate via messages
+    ** INSTALL DOC
