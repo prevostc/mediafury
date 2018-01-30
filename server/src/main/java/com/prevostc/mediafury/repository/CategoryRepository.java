@@ -1,7 +1,6 @@
 package com.prevostc.mediafury.repository;
 
-import com.prevostc.mediafury.model.Movie;
-import com.prevostc.mediafury.projection.MovieProjection;
+import com.prevostc.mediafury.model.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -11,16 +10,11 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.Optional;
-
 @Repository
-@RepositoryRestResource(excerptProjection = MovieProjection.class)
+@RepositoryRestResource
 @CrossOrigin
-public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
-
-    Optional<Movie> findByTitleIgnoreCase(String title);
-
+public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
     @RestResource(path = "search", rel = "search")
-    public Page findByTitleContainingIgnoreCase(@Param("q") String title, Pageable p);
+    public Page findByNameContainingIgnoreCase(@Param("q") String name, Pageable p);
 }
 

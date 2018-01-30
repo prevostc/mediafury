@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DeleteButton,
-    CreateButton, Filter
+    CreateButton, Filter, ReferenceManyField, SingleFieldList, ChipField
 } from 'admin-on-rest';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';

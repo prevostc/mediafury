@@ -12,25 +12,32 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
+@Table(name="movie")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Movie {
 
     @Id
     @GeneratedValue
-    @JsonProperty("id")
     private Long id;
 
     @NotBlank
-    @JsonProperty("title")
     private String title;
 
     @NotBlank
-    @JsonProperty("description")
     private String description;
+
+    @ManyToMany(/* do not cascade anything, manually create each entity */)
+    @JoinTable(
+        name = "movie_category",
+        joinColumns = { @JoinColumn(name = "movie_id") },
+        inverseJoinColumns = { @JoinColumn(name = "category_id") }
+    )
+    private Set<Category> categories = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,7 +58,17 @@ public class Movie {
         this.description = description;
     }
 
+    public Movie(String title, String description, Category baseCategory) {
+        this.title = title;
+        this.description = description;
+        this.categories.add(baseCategory);
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
     }
 }

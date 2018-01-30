@@ -1,6 +1,8 @@
 package com.prevostc.mediafury.commandline;
 
 import com.prevostc.mediafury.model.Movie;
+import com.prevostc.mediafury.model.Category;
+import com.prevostc.mediafury.repository.CategoryRepository;
 import com.prevostc.mediafury.repository.MovieRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,16 +10,23 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Stream;
 
 @Component
-public class MovieCommandLineRunner implements CommandLineRunner {
+public class StubData implements CommandLineRunner {
 
     private final MovieRepository movieRepository;
+    private final CategoryRepository categoryRepository;
 
-    public MovieCommandLineRunner(MovieRepository movieRepository) {
+    public StubData(MovieRepository movieRepository, CategoryRepository categoryRepository) {
         this.movieRepository = movieRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public void run(String... args) {
+        Category awesomeCategory = new Category("Awesome");
+        Category oldCategory = new Category("Before 1990");
+        categoryRepository.save(awesomeCategory);
+        categoryRepository.save(oldCategory);
+
         // from https://github.com/fivethirtyeight/data/blob/master/bechdel/movies.csv
         Stream.of(
             "Annie Hall",
@@ -58,8 +67,8 @@ public class MovieCommandLineRunner implements CommandLineRunner {
             "The French Connection",
             "Beyond the Valley of the Dolls"
         ).forEach((String title) -> {
-            movieRepository.save(new Movie(title, "Good movie, but it's not Kung fury"));
+            movieRepository.save(new Movie(title, "Good movie, but it's not Kung fury", oldCategory));
         });
-        movieRepository.save(new Movie("Kung Fury", "Yeah"));
+        movieRepository.save(new Movie("Kung Fury", "Yeah", awesomeCategory));
     }
 }

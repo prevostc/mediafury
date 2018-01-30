@@ -24,6 +24,7 @@ TODO
     ** Configure CORS + unit tests
     ** Configure CSRF + unit tests
     ** Move security-related tests to e2e tests ?
+    ** use uuids instead of ids
     * Admin
     ** Add login errors on login form
     ** Login hints

@@ -16,10 +16,8 @@ export const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-const selfLinkAsId = (entity) => ({...entity, id: entity._links.self.href.split('/').pop() })
-
 const mapSingleResult = res => {
-    const mappedResult = { data:  selfLinkAsId(res.json) };
+    const mappedResult = { data: res.json };
     return mappedResult;
 };
 
@@ -45,7 +43,7 @@ export const restClient = (type, resource, params) => {
             return promise.then((res) => {
                 const data = res.json;
                 const mappedResult = {
-                    data: data._embedded[resource].map(selfLinkAsId),
+                    data: data._embedded[resource],
                     total: data.page.totalElements
                 };
                 return mappedResult;
