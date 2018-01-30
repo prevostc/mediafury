@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.repository;
 
 import com.prevostc.mediafury.model.Category;
+import com.prevostc.mediafury.projection.CategoryProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
-@RepositoryRestResource
+@RepositoryRestResource(excerptProjection = CategoryProjection.class)
 @CrossOrigin
 public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
     @RestResource(path = "search", rel = "search")

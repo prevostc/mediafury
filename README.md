@@ -25,12 +25,16 @@ TODO
     ** Configure CSRF + unit tests
     ** Move security-related tests to e2e tests ?
     ** use uuids instead of ids
+    ** Linters & Formatters
+    ** Logger
     * Admin
     ** Add login errors on login form
     ** Login hints
     ** Auth storage service
     ** apiClient tests
     ** End to end tests
+    ** Linters & Formatters
+    ** Split by-theme components  
     * Client app
     ** Everything
     * More

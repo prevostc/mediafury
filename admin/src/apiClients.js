@@ -16,10 +16,8 @@ export const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-const mapSingleResult = res => {
-    const mappedResult = { data: res.json };
-    return mappedResult;
-};
+const setEntityId = (entity) => ({...entity, id: entity.id || entity._links.self.href.split('/').pop() })
+const mapSingleResult = res => ({ data: setEntityId(res.json) })
 
 export const restClient = (type, resource, params) => {
     switch (type) {
@@ -43,7 +41,7 @@ export const restClient = (type, resource, params) => {
             return promise.then((res) => {
                 const data = res.json;
                 const mappedResult = {
-                    data: data._embedded[resource],
+                    data: (data._embedded[resource] || []).map(setEntityId),
                     total: data.page.totalElements
                 };
                 return mappedResult;
@@ -81,7 +79,6 @@ export const authClient = (type, params) => {
         const { username, password } = params;
         const token = btoa(`${username}:${password}`);
         localStorage.setItem('token', `Basic ${token}`);
-        console.log(token)
     } else if (type === AUTH_LOGOUT) {
         localStorage.clear();
         return Promise.resolve();

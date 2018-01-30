@@ -58,17 +58,19 @@ public class Movie {
         this.description = description;
     }
 
-    public Movie(String title, String description, Category baseCategory) {
-        this.title = title;
-        this.description = description;
-        this.categories.add(baseCategory);
-    }
-
     public String getTitle() {
         return title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 }

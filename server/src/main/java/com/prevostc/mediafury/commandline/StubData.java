@@ -24,8 +24,10 @@ public class StubData implements CommandLineRunner {
     public void run(String... args) {
         Category awesomeCategory = new Category("Awesome");
         Category oldCategory = new Category("Before 1990");
+        Category old2Category = new Category("Before 2000");
         categoryRepository.save(awesomeCategory);
         categoryRepository.save(oldCategory);
+        categoryRepository.save(old2Category);
 
         // from https://github.com/fivethirtyeight/data/blob/master/bechdel/movies.csv
         Stream.of(
@@ -67,8 +69,13 @@ public class StubData implements CommandLineRunner {
             "The French Connection",
             "Beyond the Valley of the Dolls"
         ).forEach((String title) -> {
-            movieRepository.save(new Movie(title, "Good movie, but it's not Kung fury", oldCategory));
+            Movie movie = new Movie(title, "Good movie, but it's not Kung fury");
+            movie.addCategory(oldCategory);
+            movie.addCategory(old2Category);
+            movieRepository.save(movie);
         });
-        movieRepository.save(new Movie("Kung Fury", "Yeah", awesomeCategory));
+        Movie movie = new Movie("Kung Fury", "Yeah");
+        movie.addCategory(awesomeCategory);
+        movieRepository.save(movie);
     }
 }

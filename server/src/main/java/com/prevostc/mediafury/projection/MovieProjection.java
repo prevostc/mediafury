@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.config.Projection;
 
 import java.util.Set;
 
-@Projection(name = "categories", types = { Movie.class })
+@Projection(name = "movie", types = { Movie.class })
 public interface MovieProjection {
     Long getId();
     String getTitle();
