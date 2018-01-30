@@ -14,6 +14,7 @@ TODO
 ====
 
     * Api
+    ** JHIPSTER THE BACKEND
     ** Api versonning
     ** Api doc (springfox + springfox ui)
     ** Better auth method
