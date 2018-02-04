@@ -21,10 +21,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,9 +39,10 @@ public class StubData implements CommandLineRunner {
     private final CategoryService categoryService;
     private final PersonService personService;
     private final MoviePersonService moviePersonService;
+
     private final Logger log = LoggerFactory.getLogger(StubData.class);
 
-    StubData(MovieService movieService, CategoryService categoryService, PersonService personService, MoviePersonService moviePersonService) {
+    public StubData(MovieService movieService, CategoryService categoryService, PersonService personService, MoviePersonService moviePersonService) {
         this.movieService = movieService;
         this.categoryService = categoryService;
         this.personService = personService;
@@ -48,8 +52,12 @@ public class StubData implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        File jsonFile = new ClassPathResource("data/movies.json").getFile();
+        Resource resource = new ClassPathResource("data/movies.json");
+        // we need the input stream because the file is inside our jar
+        // thank you Kamil Wozniak for the tip: https://smarterco.de/java-load-file-from-classpath-in-spring-boot/
+        InputStream jsonInputStream = resource.getInputStream();
 
+        // open json file and register our custom mapper
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
         SimpleModule module =
@@ -57,7 +65,8 @@ public class StubData implements CommandLineRunner {
         module.addDeserializer(MovieData.class, new CustomMovieDeserializer());
         mapper.registerModule(module);
 
-        MovieData[] movies = mapper.readValue(jsonFile, MovieData[].class);
+        // trigger ETL process
+        MovieData[] movies = mapper.readValue(jsonInputStream, MovieData[].class);
         for (MovieData movieData : movies) {
             if (movieData == null) {
                 continue;
