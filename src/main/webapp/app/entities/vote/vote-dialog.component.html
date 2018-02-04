@@ -1,0 +1,61 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myVoteLabel" jhiTranslate="mediafuryApp.vote.home.createOrEditLabel">Create or edit a Vote</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!vote.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="vote.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.vote.winnerEloDiff" for="field_winnerEloDiff">Winner Elo Diff</label>
+            <input type="number" class="form-control" name="winnerEloDiff" id="field_winnerEloDiff"
+                [(ngModel)]="vote.winnerEloDiff" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.vote.loserEloDiff" for="field_loserEloDiff">Loser Elo Diff</label>
+            <input type="number" class="form-control" name="loserEloDiff" id="field_loserEloDiff"
+                [(ngModel)]="vote.loserEloDiff" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.vote.winner" for="field_winner">Winner</label>
+            <select class="form-control" id="field_winner" name="winner" [(ngModel)]="vote.winnerId"  required>
+                <option *ngIf="!editForm.value.winner" [ngValue]="null" selected></option>
+                <option [ngValue]="movieOption.id" *ngFor="let movieOption of movies; trackBy: trackMovieById">{{movieOption.title}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.winner?.dirty && editForm.controls.winner?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.winner?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.vote.loser" for="field_loser">Loser</label>
+            <select class="form-control" id="field_loser" name="loser" [(ngModel)]="vote.loserId"  required>
+                <option *ngIf="!editForm.value.loser" [ngValue]="null" selected></option>
+                <option [ngValue]="movieOption.id" *ngFor="let movieOption of movies; trackBy: trackMovieById">{{movieOption.title}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.loser?.dirty && editForm.controls.loser?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.loser?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

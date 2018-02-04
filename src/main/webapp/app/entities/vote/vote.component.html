@@ -1,0 +1,80 @@
+<div>
+    <h2>
+        <span jhiTranslate="mediafuryApp.vote.home.title">Votes</span>
+        <button class="btn btn-primary float-right jh-create-entity create-vote" [routerLink]="['/', { outlets: { popup: ['vote-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="mediafuryApp.vote.home.createLabel">
+            Create new Vote
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="votes">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="winnerEloDiff"><span jhiTranslate="mediafuryApp.vote.winnerEloDiff">Winner Elo Diff</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="loserEloDiff"><span jhiTranslate="mediafuryApp.vote.loserEloDiff">Loser Elo Diff</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="winnerTitle"><span jhiTranslate="mediafuryApp.vote.winner">Winner</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="loserTitle"><span jhiTranslate="mediafuryApp.vote.loser">Loser</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let vote of votes ;trackBy: trackId">
+                <td><a [routerLink]="['../vote', vote.id ]">{{vote.id}}</a></td>
+                <td>{{vote.winnerEloDiff}}</td>
+                <td>{{vote.loserEloDiff}}</td>
+                <td>
+                    <div *ngIf="vote.winnerId">
+                        <a [routerLink]="['../movie', vote.winnerId  ]" >{{vote.winnerTitle}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="vote.loserId">
+                        <a [routerLink]="['../movie', vote.loserId  ]" >{{vote.loserTitle}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../vote', vote.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'vote/'+ vote.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'vote/'+ vote.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="votes && votes.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

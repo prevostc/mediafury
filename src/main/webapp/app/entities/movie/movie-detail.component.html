@@ -1,0 +1,48 @@
+
+<div *ngIf="movie">
+    <h2><span jhiTranslate="mediafuryApp.movie.detail.title">Movie</span> {{movie.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="mediafuryApp.movie.title">Title</span></dt>
+        <dd>
+            <span>{{movie.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.movie.year">Year</span></dt>
+        <dd>
+            <span>{{movie.year}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.movie.plot">Plot</span></dt>
+        <dd>
+            <span>{{movie.plot}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.movie.imageUrl">Image Url</span></dt>
+        <dd>
+            <span>{{movie.imageUrl}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.movie.elo">Elo</span></dt>
+        <dd>
+            <span>{{movie.elo}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.movie.category">Category</span></dt>
+        <dd>
+            <span *ngFor="let category of movie.categories; let last = last">
+                <a [routerLink]="['/category', category?.id ]">{{category.title}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'movie/'+ movie.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

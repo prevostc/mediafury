@@ -1,0 +1,28 @@
+
+{
+    "mediafuryApp": {
+        "movie" : {
+            "home": {
+                "title": "Movies",
+                "createLabel": "Créer un nouveau Movie",
+                "createOrEditLabel": "Créer ou éditer un Movie"
+            },
+            "created": "Un nouveau Movie a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Movie avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Movie avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Movie {{ id }} ?"
+            },
+            "detail": {
+                "title": "Movie"
+            },
+            "title": "Title",
+            "year": "Year",
+            "plot": "Plot",
+            "imageUrl": "Image Url",
+            "elo": "Elo",
+            "moviePerson": "Movie Person",
+            "category": "Category"
+        }
+    }
+}

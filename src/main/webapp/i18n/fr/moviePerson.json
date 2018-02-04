@@ -1,0 +1,24 @@
+
+{
+    "mediafuryApp": {
+        "moviePerson" : {
+            "home": {
+                "title": "MoviePeople",
+                "createLabel": "Créer un nouveau Movie Person",
+                "createOrEditLabel": "Créer ou éditer un Movie Person"
+            },
+            "created": "Un nouveau Movie Person a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Movie Person avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Movie Person avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Movie Person {{ id }} ?"
+            },
+            "detail": {
+                "title": "Movie Person"
+            },
+            "role": "Role",
+            "movie": "Movie",
+            "person": "Person"
+        }
+    }
+}

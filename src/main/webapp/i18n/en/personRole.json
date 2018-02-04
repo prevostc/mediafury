@@ -1,0 +1,10 @@
+{
+    "mediafuryApp": {
+        "PersonRole" : {
+            "null": "",
+            "WRITER": "WRITER",
+            "ACTOR": "ACTOR",
+            "DIRECTOR": "DIRECTOR"
+        }
+    }
+}

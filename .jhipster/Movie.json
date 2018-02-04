@@ -1,0 +1,68 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "moviePerson",
+            "otherEntityName": "moviePerson",
+            "otherEntityRelationshipName": "movie"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "movie",
+            "relationshipName": "category",
+            "otherEntityName": "category",
+            "otherEntityField": "title",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 1,
+            "fieldValidateRulesMaxlength": 200
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 1888,
+            "fieldValidateRulesMax": 3000
+        },
+        {
+            "fieldName": "plot",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 2000
+        },
+        {
+            "fieldName": "imageUrl",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 2000
+        },
+        {
+            "fieldName": "elo",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180204200753",
+    "entityTableName": "movie",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

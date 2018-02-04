@@ -1,0 +1,50 @@
+
+entity Movie {
+	title String required minlength(1) maxlength(200) 
+    year Integer min(1888) max(3000)
+    plot String maxlength(2000)
+    imageUrl String maxlength(2000)
+    elo Integer
+}
+
+entity Category {
+	name String required minlength(1) maxlength(200)
+}
+
+entity Person {
+ 	name String required minlength(1) maxlength(200)
+}
+
+entity MoviePerson {
+	role PersonRole required
+}
+
+enum PersonRole {
+	WRITER, ACTOR, DIRECTOR
+}
+
+entity Vote {
+	winnerEloDiff Integer,
+    loserEloDiff Integer
+}
+
+
+relationship ManyToMany {
+	Movie{category(title)} to Category{movie(title)}
+}
+
+relationship OneToMany {
+	Movie{moviePerson(name)} to MoviePerson{movie(title) required},
+	Person{moviePerson(title)} to MoviePerson{person(name) required}
+}
+
+relationship ManyToOne {
+	Vote{winner(title) required} to Movie,
+	Vote{loser(title) required} to Movie
+}
+
+paginate * with pagination
+dto * with mapstruct
+
+// Set service options to all except few
+service * with serviceClass

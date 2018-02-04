@@ -10,9 +10,17 @@
     <include file="config/liquibase/changelog/20180204195242_added_entity_Person.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180204195243_added_entity_MoviePerson.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180204195244_added_entity_Vote.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200753_added_entity_Movie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200754_added_entity_Category.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200755_added_entity_Person.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200756_added_entity_MoviePerson.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200757_added_entity_Vote.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180204195240_added_entity_constraints_Movie.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180204195243_added_entity_constraints_MoviePerson.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180204195244_added_entity_constraints_Vote.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200753_added_entity_constraints_Movie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200756_added_entity_constraints_MoviePerson.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180204200757_added_entity_constraints_Vote.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -1,0 +1,24 @@
+
+{
+    "mediafuryApp": {
+        "moviePerson" : {
+            "home": {
+                "title": "Movie People",
+                "createLabel": "Create a new Movie Person",
+                "createOrEditLabel": "Create or edit a Movie Person"
+            },
+            "created": "A new Movie Person is created with identifier {{ param }}",
+            "updated": "A Movie Person is updated with identifier {{ param }}",
+            "deleted": "A Movie Person is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Movie Person {{ id }}?"
+            },
+            "detail": {
+                "title": "Movie Person"
+            },
+            "role": "Role",
+            "movie": "Movie",
+            "person": "Person"
+        }
+    }
+}

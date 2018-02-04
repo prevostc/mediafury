@@ -1,0 +1,42 @@
+
+<div *ngIf="vote">
+    <h2><span jhiTranslate="mediafuryApp.vote.detail.title">Vote</span> {{vote.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="mediafuryApp.vote.winnerEloDiff">Winner Elo Diff</span></dt>
+        <dd>
+            <span>{{vote.winnerEloDiff}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.vote.loserEloDiff">Loser Elo Diff</span></dt>
+        <dd>
+            <span>{{vote.loserEloDiff}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.vote.winner">Winner</span></dt>
+        <dd>
+            <div *ngIf="vote.winnerId">
+                <a [routerLink]="['/movie', vote.winnerId]">{{vote.winnerTitle}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.vote.loser">Loser</span></dt>
+        <dd>
+            <div *ngIf="vote.loserId">
+                <a [routerLink]="['/movie', vote.loserId]">{{vote.loserTitle}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'vote/'+ vote.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

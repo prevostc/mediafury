@@ -1,0 +1,38 @@
+
+<div *ngIf="moviePerson">
+    <h2><span jhiTranslate="mediafuryApp.moviePerson.detail.title">Movie Person</span> {{moviePerson.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="mediafuryApp.moviePerson.role">Role</span></dt>
+        <dd>
+            <span jhiTranslate="{{'mediafuryApp.PersonRole.' + moviePerson.role}}">{{moviePerson.role}}</span>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.moviePerson.movie">Movie</span></dt>
+        <dd>
+            <div *ngIf="moviePerson.movieId">
+                <a [routerLink]="['/movie', moviePerson.movieId]">{{moviePerson.movieTitle}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="mediafuryApp.moviePerson.person">Person</span></dt>
+        <dd>
+            <div *ngIf="moviePerson.personId">
+                <a [routerLink]="['/person', moviePerson.personId]">{{moviePerson.personName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'movie-person/'+ moviePerson.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

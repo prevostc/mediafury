@@ -1,0 +1,65 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myMoviePersonLabel" jhiTranslate="mediafuryApp.moviePerson.home.createOrEditLabel">Create or edit a Movie Person</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!moviePerson.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="moviePerson.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.moviePerson.role" for="field_role">Role</label>
+            <select class="form-control" name="role" [(ngModel)]="moviePerson.role" id="field_role"  required>
+                <option value="WRITER">{{'mediafuryApp.PersonRole.WRITER' | translate}}</option>
+                <option value="ACTOR">{{'mediafuryApp.PersonRole.ACTOR' | translate}}</option>
+                <option value="DIRECTOR">{{'mediafuryApp.PersonRole.DIRECTOR' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.role?.dirty && editForm.controls.role?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.role?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.moviePerson.movie" for="field_movie">Movie</label>
+            <select class="form-control" id="field_movie" name="movie" [(ngModel)]="moviePerson.movieId"  required>
+                <option *ngIf="!editForm.value.movie" [ngValue]="null" selected></option>
+                <option [ngValue]="movieOption.id" *ngFor="let movieOption of movies; trackBy: trackMovieById">{{movieOption.title}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.movie?.dirty && editForm.controls.movie?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.movie?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="mediafuryApp.moviePerson.person" for="field_person">Person</label>
+            <select class="form-control" id="field_person" name="person" [(ngModel)]="moviePerson.personId"  required>
+                <option *ngIf="!editForm.value.person" [ngValue]="null" selected></option>
+                <option [ngValue]="personOption.id" *ngFor="let personOption of people; trackBy: trackPersonById">{{personOption.name}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.person?.dirty && editForm.controls.person?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.person?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

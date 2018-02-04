@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "winner",
+            "otherEntityName": "movie",
+            "otherEntityField": "title"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "loser",
+            "otherEntityName": "movie",
+            "otherEntityField": "title"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "winnerEloDiff",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "loserEloDiff",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180204200757",
+    "entityTableName": "vote",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}
