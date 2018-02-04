@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 /**
  * Service Implementation for managing MoviePerson.
@@ -38,9 +40,9 @@ public class MoviePersonService {
      */
     public MoviePersonDTO save(MoviePersonDTO moviePersonDTO) {
         log.debug("Request to save MoviePerson : {}", moviePersonDTO);
-        MoviePerson moviePerson = moviePersonMapper.toEntity(moviePersonDTO);
-        moviePerson = moviePersonRepository.save(moviePerson);
-        return moviePersonMapper.toDto(moviePerson);
+        Optional<MoviePerson> existingCategory = moviePersonRepository.findOneByRoleAndMovieIdAndPersonId(moviePersonDTO.getRole(), moviePersonDTO.getMovieId(), moviePersonDTO.getPersonId());
+        MoviePerson category = existingCategory.orElseGet(() -> moviePersonRepository.save(moviePersonMapper.toEntity(moviePersonDTO)));
+        return moviePersonMapper.toDto(category);
     }
 
     /**

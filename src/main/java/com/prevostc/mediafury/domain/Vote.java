@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "vote")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Vote implements Serializable {
+public class Vote extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

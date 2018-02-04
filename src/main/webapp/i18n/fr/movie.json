@@ -20,6 +20,7 @@
             "year": "Year",
             "plot": "Plot",
             "imageUrl": "Image Url",
+            "image": "Image",
             "elo": "Elo",
             "moviePerson": "Movie Person",
             "category": "Category"

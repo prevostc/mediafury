@@ -18,6 +18,14 @@ public class PersonDTO implements Serializable {
     @Size(min = 1, max = 200)
     private String name;
 
+    public PersonDTO() {
+
+    }
+
+    public PersonDTO(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

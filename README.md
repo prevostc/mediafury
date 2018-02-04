@@ -1,6 +1,11 @@
 # mediafury
 This application was generated using JHipster 4.14.0, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.14.0](http://www.jhipster.tech/documentation-archive/v4.14.0).
 
+# import movie data
+
+Place a movie data file inside src/main/resources/data/movies.json
+The data is directly from http://www.omdbapi.com/
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -27,24 +32,6 @@ specifying a newer version in [package.json](package.json). You can also run `np
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
 The `npm run` command will list all of the scripts available to run for this project.
-
-### Service workers
-
-Service workers are commented by default, to enable them please uncomment the following code.
-
-* The service worker registering script in index.html
-
-```html
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker
-        .register('./sw.js')
-        .then(function() { console.log('Service Worker Registered'); });
-    }
-</script>
-```
-
-Note: workbox creates the respective service worker and dynamically generate the `sw.js`
 
 ### Managing dependencies
 

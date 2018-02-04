@@ -1,10 +1,8 @@
 package com.prevostc.mediafury.service.dto;
 
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -25,6 +23,14 @@ public class VoteDTO implements Serializable {
     private Long loserId;
 
     private String loserTitle;
+
+    private String createdBy;
+
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -82,6 +88,38 @@ public class VoteDTO implements Serializable {
         this.loserTitle = movieTitle;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -109,6 +147,10 @@ public class VoteDTO implements Serializable {
             "id=" + getId() +
             ", winnerEloDiff=" + getWinnerEloDiff() +
             ", loserEloDiff=" + getLoserEloDiff() +
+            ", createdBy=" + getCreatedBy() +
+            ", createdDate=" + getCreatedDate() +
+            ", lastModifiedBy='" + getLastModifiedBy() + '\'' +
+            ", lastModifiedDate=" + getLastModifiedDate() +
             "}";
     }
 }

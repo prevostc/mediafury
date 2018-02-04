@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.Optional;
+
 
 /**
  * Spring Data JPA repository for the Category entity.
@@ -13,4 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
+    Optional<Category> findOneByName(String name);
 }

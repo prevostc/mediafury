@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 /**
  * Service Implementation for managing Person.
@@ -38,8 +40,8 @@ public class PersonService {
      */
     public PersonDTO save(PersonDTO personDTO) {
         log.debug("Request to save Person : {}", personDTO);
-        Person person = personMapper.toEntity(personDTO);
-        person = personRepository.save(person);
+        Optional<Person> existingPerson = personRepository.findOneByName(personDTO.getName());
+        Person person = existingPerson.orElseGet(() -> personRepository.save(personMapper.toEntity(personDTO)));
         return personMapper.toDto(person);
     }
 

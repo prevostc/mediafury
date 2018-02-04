@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 
 /**
  * Service Implementation for managing Category.
@@ -38,8 +41,8 @@ public class CategoryService {
      */
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
-        Category category = categoryMapper.toEntity(categoryDTO);
-        category = categoryRepository.save(category);
+        Optional<Category> existingCategory = categoryRepository.findOneByName(categoryDTO.getName());
+        Category category = existingCategory.orElseGet(() -> categoryRepository.save(categoryMapper.toEntity(categoryDTO)));
         return categoryMapper.toDto(category);
     }
 

@@ -20,7 +20,7 @@
             <th jhiSortBy="title"><span jhiTranslate="mediafuryApp.movie.title">Title</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="year"><span jhiTranslate="mediafuryApp.movie.year">Year</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="plot"><span jhiTranslate="mediafuryApp.movie.plot">Plot</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="imageUrl"><span jhiTranslate="mediafuryApp.movie.imageUrl">Image Url</span> <span class="fa fa-sort"></span></th>
+            <th><span jhiTranslate="mediafuryApp.movie.image">Image</span></th>
             <th jhiSortBy="elo"><span jhiTranslate="mediafuryApp.movie.elo">Elo</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
@@ -31,7 +31,7 @@
                 <td>{{movie.title}}</td>
                 <td>{{movie.year}}</td>
                 <td>{{movie.plot}}</td>
-                <td>{{movie.imageUrl}}</td>
+                <td><img height="100" src="{{movie.imageUrl}}"></td>
                 <td>{{movie.elo}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

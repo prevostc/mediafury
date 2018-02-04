@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.Optional;
+
 
 /**
  * Spring Data JPA repository for the Person entity.
@@ -13,4 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
+    Optional<Person> findOneByName(String name);
 }

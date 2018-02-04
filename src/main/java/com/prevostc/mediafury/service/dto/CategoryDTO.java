@@ -18,6 +18,13 @@ public class CategoryDTO implements Serializable {
     @Size(min = 1, max = 200)
     private String name;
 
+    public CategoryDTO() {
+    }
+
+    public CategoryDTO(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

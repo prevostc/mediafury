@@ -3,8 +3,6 @@ package com.prevostc.mediafury.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.prevostc.mediafury.domain.enumeration.PersonRole;
 
@@ -25,6 +23,20 @@ public class MoviePersonDTO implements Serializable {
     private Long personId;
 
     private String personName;
+
+    public MoviePersonDTO() {
+
+    }
+
+    public MoviePersonDTO(PersonRole role) {
+        this.role = role;
+    }
+
+    public MoviePersonDTO(MovieDTO movieDTO, PersonDTO personDTO, PersonRole role) {
+        this.movieId = movieDTO.getId();
+        this.personId = personDTO.getId();
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
