@@ -48,9 +48,7 @@ public class StubData implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-
-        ObjectMapper jsonMapper = new ObjectMapper();
-        File jsonFile = new ClassPathResource("data/movies.json.dist").getFile();
+        File jsonFile = new ClassPathResource("data/movies.json").getFile();
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);

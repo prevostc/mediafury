@@ -9,6 +9,9 @@ This application was generated using JHipster 4.14.0, you can find documentation
 Place a movie data file inside src/main/resources/data/movies.json
 The data is directly from http://www.omdbapi.com/
 
+Use the provided js script `src/main/resources/data/fetchAll.js`
+Or simply `cp src/main/resources/data/movies.json.dist src/main/resources/data/movies.json`
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:

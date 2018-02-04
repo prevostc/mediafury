@@ -28,6 +28,7 @@ before_install:
   - node -v
   - npm -v
 install:
+  - cp src/main/resources/data/movies.json.dist src/main/resources/data/movies.json
   - npm install
 script:
   - chmod +x mvnw
