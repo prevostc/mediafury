@@ -8,11 +8,14 @@ import com.prevostc.mediafury.service.util.ImportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -30,12 +33,15 @@ public class MovieService {
 
     private final ImportUtil<MovieDTO, Movie, Long> importUtil;
 
+    private final ThreadLocalRandom random;
+
     public MovieService(MovieRepository movieRepository, MovieMapper movieMapper) {
         this.movieRepository = movieRepository;
         this.movieMapper = movieMapper;
         this.importUtil = new ImportUtil<>(movieRepository, movieMapper, (MovieDTO dto) ->
             movieRepository.findOneByTitleAndYear(dto.getTitle(), dto.getYear())
         );
+        this.random = ThreadLocalRandom.current();
     }
 
     /**
@@ -95,5 +101,17 @@ public class MovieService {
     public void delete(Long id) {
         log.debug("Request to delete Movie : {}", id);
         movieRepository.delete(id);
+    }
+
+    /**
+     * Get one random movie
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public MovieDTO findOneRandom() {
+        Long qty = movieRepository.count();
+        int idx = this.random.nextInt(0, qty.intValue());
+        Page<Movie> page = movieRepository.findAll(new PageRequest(idx, 1));
+        return movieMapper.toDto(page.getContent().get(0));
     }
 }

@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.prevostc.mediafury.security.AuthoritiesConstants;
 import com.prevostc.mediafury.service.MovieService;
 import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,6 +51,7 @@ public class MovieResource {
      */
     @PostMapping("/movies")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<MovieDTO> createMovie(@Valid @RequestBody MovieDTO movieDTO) throws URISyntaxException {
         log.debug("REST request to save Movie : {}", movieDTO);
         if (movieDTO.getId() != null) {
@@ -71,6 +74,7 @@ public class MovieResource {
      */
     @PutMapping("/movies")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<MovieDTO> updateMovie(@Valid @RequestBody MovieDTO movieDTO) throws URISyntaxException {
         log.debug("REST request to update Movie : {}", movieDTO);
         if (movieDTO.getId() == null) {
@@ -98,6 +102,20 @@ public class MovieResource {
     }
 
     /**
+     * GET  /movies/random : get a random movie
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of movies in body
+     */
+    @GetMapping("/movies/random")
+    @Timed
+    public ResponseEntity<MovieDTO> getRandom() {
+        log.debug("REST request to get random Movie : {}");
+        MovieDTO movieDTO = movieService.findOneRandom();
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(movieDTO));
+    }
+
+
+    /**
      * GET  /movies/:id : get the "id" movie.
      *
      * @param id the id of the movieDTO to retrieve
@@ -119,6 +137,7 @@ public class MovieResource {
      */
     @DeleteMapping("/movies/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
         log.debug("REST request to delete Movie : {}", id);
         movieService.delete(id);

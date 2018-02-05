@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.prevostc.mediafury.security.AuthoritiesConstants;
 import com.prevostc.mediafury.service.CategoryService;
 import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,6 +51,7 @@ public class CategoryResource {
      */
     @PostMapping("/categories")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws URISyntaxException {
         log.debug("REST request to save Category : {}", categoryDTO);
         if (categoryDTO.getId() != null) {
@@ -71,6 +74,7 @@ public class CategoryResource {
      */
     @PutMapping("/categories")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws URISyntaxException {
         log.debug("REST request to update Category : {}", categoryDTO);
         if (categoryDTO.getId() == null) {
@@ -119,6 +123,7 @@ public class CategoryResource {
      */
     @DeleteMapping("/categories/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
         categoryService.delete(id);

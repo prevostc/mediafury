@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.prevostc.mediafury.security.AuthoritiesConstants;
 import com.prevostc.mediafury.service.MoviePersonService;
 import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +30,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Secured(AuthoritiesConstants.ADMIN)
 public class MoviePersonResource {
 
     private final Logger log = LoggerFactory.getLogger(MoviePersonResource.class);
