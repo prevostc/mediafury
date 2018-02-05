@@ -4,6 +4,7 @@ import com.prevostc.mediafury.domain.Category;
 import com.prevostc.mediafury.repository.CategoryRepository;
 import com.prevostc.mediafury.service.dto.CategoryDTO;
 import com.prevostc.mediafury.service.mapper.CategoryMapper;
+import com.prevostc.mediafury.service.util.ImportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,11 +29,26 @@ public class CategoryService {
 
     private final CategoryMapper categoryMapper;
 
+    private final ImportUtil<CategoryDTO, Category, Long> importUtil;
+
     public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.importUtil = new ImportUtil<>(categoryRepository, categoryMapper, (CategoryDTO dto) ->
+            categoryRepository.findOneByName(dto.getName())
+        );
     }
 
+    /**
+     * Imports category data, inserts the entity if it does not already exists
+     * given the functional key [title, year]
+     * @param personDTO the entity to save
+     * @return the newly created entity
+     */
+    public CategoryDTO importData(CategoryDTO personDTO) {
+        return this.importUtil.importData(personDTO);
+    }
+    
     /**
      * Save a category.
      *

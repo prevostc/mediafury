@@ -39,6 +39,8 @@ public class StubDataUnitTest {
     @Test
     @Transactional
     public void testdataIsFetchedFromJson() throws Exception {
+        // @todo: comprehensive import unit test
+        // @todo: also test ImportUtil
         stubData.run();
     }
 

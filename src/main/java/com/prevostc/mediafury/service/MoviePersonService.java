@@ -4,6 +4,7 @@ import com.prevostc.mediafury.domain.MoviePerson;
 import com.prevostc.mediafury.repository.MoviePersonRepository;
 import com.prevostc.mediafury.service.dto.MoviePersonDTO;
 import com.prevostc.mediafury.service.mapper.MoviePersonMapper;
+import com.prevostc.mediafury.service.util.ImportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,9 +28,24 @@ public class MoviePersonService {
 
     private final MoviePersonMapper moviePersonMapper;
 
+    private final ImportUtil<MoviePersonDTO, MoviePerson, Long> importUtil;
+
     public MoviePersonService(MoviePersonRepository moviePersonRepository, MoviePersonMapper moviePersonMapper) {
         this.moviePersonRepository = moviePersonRepository;
         this.moviePersonMapper = moviePersonMapper;
+        this.importUtil = new ImportUtil<>(moviePersonRepository, moviePersonMapper, (MoviePersonDTO dto) ->
+            moviePersonRepository.findOneByRoleAndMovieIdAndPersonId(dto.getRole(), dto.getMovieId(), dto.getPersonId())
+        );
+    }
+
+    /**
+     * Imports movie person data, inserts the entity if it does not already exists
+     * given the functional key [role, movieId, personId]
+     * @param moviePersonDTO the entity to save
+     * @return the newly created entity
+     */
+    public MoviePersonDTO importData(MoviePersonDTO moviePersonDTO) {
+        return this.importUtil.importData(moviePersonDTO);
     }
 
     /**
@@ -40,9 +56,9 @@ public class MoviePersonService {
      */
     public MoviePersonDTO save(MoviePersonDTO moviePersonDTO) {
         log.debug("Request to save MoviePerson : {}", moviePersonDTO);
-        Optional<MoviePerson> existingCategory = moviePersonRepository.findOneByRoleAndMovieIdAndPersonId(moviePersonDTO.getRole(), moviePersonDTO.getMovieId(), moviePersonDTO.getPersonId());
-        MoviePerson category = existingCategory.orElseGet(() -> moviePersonRepository.save(moviePersonMapper.toEntity(moviePersonDTO)));
-        return moviePersonMapper.toDto(category);
+        MoviePerson moviePerson = moviePersonMapper.toEntity(moviePersonDTO);
+        moviePerson = moviePersonRepository.save(moviePerson);
+        return moviePersonMapper.toDto(moviePerson);
     }
 
     /**

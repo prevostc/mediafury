@@ -4,6 +4,7 @@ import com.prevostc.mediafury.domain.Movie;
 import com.prevostc.mediafury.repository.MovieRepository;
 import com.prevostc.mediafury.service.dto.MovieDTO;
 import com.prevostc.mediafury.service.mapper.MovieMapper;
+import com.prevostc.mediafury.service.util.ImportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,9 +28,24 @@ public class MovieService {
 
     private final MovieMapper movieMapper;
 
+    private final ImportUtil<MovieDTO, Movie, Long> importUtil;
+
     public MovieService(MovieRepository movieRepository, MovieMapper movieMapper) {
         this.movieRepository = movieRepository;
         this.movieMapper = movieMapper;
+        this.importUtil = new ImportUtil<>(movieRepository, movieMapper, (MovieDTO dto) ->
+            movieRepository.findOneByTitleAndYear(dto.getTitle(), dto.getYear())
+        );
+    }
+
+    /**
+     * Imports movie data, inserts the entity if it does not already exists
+     * given the functional key [title, year]
+     * @param movieDTO the entity to save
+     * @return the newly created entity
+     */
+    public MovieDTO importData(MovieDTO movieDTO) {
+        return this.importUtil.importData(movieDTO);
     }
 
     /**
@@ -40,9 +56,9 @@ public class MovieService {
      */
     public MovieDTO save(MovieDTO movieDTO) {
         log.debug("Request to save Movie : {}", movieDTO);
-        Optional<Movie> existingMovie = movieRepository.findOneByTitleAndYear(movieDTO.getTitle(), movieDTO.getYear());
-        Movie category = existingMovie.orElseGet(() -> movieRepository.save(movieMapper.toEntity(movieDTO)));
-        return movieMapper.toDto(category);
+        Movie movie = movieMapper.toEntity(movieDTO);
+        movie = movieRepository.save(movie);
+        return movieMapper.toDto(movie);
     }
 
     /**

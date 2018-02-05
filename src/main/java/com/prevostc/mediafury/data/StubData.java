@@ -22,11 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,42 +60,42 @@ public class StubData implements CommandLineRunner {
         mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
         SimpleModule module =
             new SimpleModule("CustomMovieDeserializer", new Version(1, 0, 0, null, null, null));
-        module.addDeserializer(MovieData.class, new CustomMovieDeserializer());
+        module.addDeserializer(StubMovieDTO.class, new CustomMovieDeserializer());
         mapper.registerModule(module);
 
         // trigger ETL process
-        MovieData[] movies = mapper.readValue(jsonInputStream, MovieData[].class);
-        for (MovieData movieData : movies) {
-            if (movieData == null) {
+        StubMovieDTO[] movies = mapper.readValue(jsonInputStream, StubMovieDTO[].class);
+        for (StubMovieDTO stubMovieDTO : movies) {
+            if (stubMovieDTO == null) {
                 continue;
             }
             try {
-                // save movie to get ID
-                MovieDTO movieDTO = movieService.save(movieData.getMovieDTO());
+                // import movie to get ID
+                MovieDTO movieDTO = movieService.importData(stubMovieDTO.getMovieDTO());
 
-                // save all categories to get the ID
-                Set<CategoryDTO> categoryDTOs = movieData.getCategoryDTOs().stream()
-                    .map(categoryService::save)
+                // import all categories to get the ID
+                Set<CategoryDTO> categoryDTOs = stubMovieDTO.getCategoryDTOs().stream()
+                    .map(categoryService::importData)
                     .collect(Collectors.toSet());
                 movieDTO.setCategories(categoryDTOs);
 
-                // save all persons
-                Set<MoviePersonDTO> moviePersonDTOs = movieData.getMoviePersonStubDataDTOs().stream()
-                    .map(moviePersonStubDataDTO -> new MoviePersonDTO(movieDTO, personService.save(moviePersonStubDataDTO.personDTO), moviePersonStubDataDTO.getRole()))
-                    .map(moviePersonService::save)
+                // import all persons
+                Set<MoviePersonDTO> moviePersonDTOs = stubMovieDTO.getStubMoviePersonDTOS().stream()
+                    .map(stubMoviePersonDTO -> new MoviePersonDTO(movieDTO, personService.importData(stubMoviePersonDTO.getPersonDTO()), stubMoviePersonDTO.getRole()))
+                    .map(moviePersonService::importData)
                     .collect(Collectors.toSet());
             } catch (Exception e) {
                 if (log.isDebugEnabled()) {
-                    log.error("Failed to save movie json '{}'", e);
+                    log.error("Failed to import movie json '{}'", e);
                 } else {
-                    log.error("Failed to save movie json '{}': {}", e.getMessage());
+                    log.error("Failed to import movie json '{}': {}", e.getMessage());
                 }
                 throw e;
             }
         }
     }
 
-    static class CustomMovieDeserializer extends StdDeserializer<MovieData> {
+    static class CustomMovieDeserializer extends StdDeserializer<StubMovieDTO> {
 
         static final String NOT_APPLICABLE = "N/A";
         static final String PERSON_SPLIT_PATTERN = "( ?\\(.+?\\))?, | ?\\(.+?\\)$";
@@ -113,7 +111,7 @@ public class StubData implements CommandLineRunner {
         }
 
         @Override
-        public MovieData deserialize(JsonParser parser, DeserializationContext deserializer) {
+        public StubMovieDTO deserialize(JsonParser parser, DeserializationContext deserializer) {
             MovieDTO movieDTO = new MovieDTO();
             ObjectCodec codec = parser.getCodec();
             try {
@@ -137,7 +135,7 @@ public class StubData implements CommandLineRunner {
                 ;
 
                 // fetch persons in custom DTO object
-                Set<MoviePersonStubDataDTO> moviePersonStubDataDTOs = Stream.concat(
+                Set<StubMoviePersonDTO> stubMoviePersonDTOS = Stream.concat(
                     Stream.concat(
                         parsePersonField(node,"Director", PersonRole.DIRECTOR),
                         parsePersonField(node,"Writer", PersonRole.WRITER)
@@ -145,7 +143,7 @@ public class StubData implements CommandLineRunner {
                     parsePersonField(node,"Actors", PersonRole.ACTOR)
                 ).collect(Collectors.toSet());
 
-                return new MovieData(movieDTO, moviePersonStubDataDTOs, categoryDTOs);
+                return new StubMovieDTO(movieDTO, stubMoviePersonDTOS, categoryDTOs);
             } catch (Exception e) {
                 if (log.isDebugEnabled()) {
                     log.error("Failed to parse movies json '{}'", e);
@@ -165,28 +163,28 @@ public class StubData implements CommandLineRunner {
          * @param role Role to attribute for these persons
          * @return A DTO stream
          */
-        private Stream<MoviePersonStubDataDTO> parsePersonField(JsonNode node, String field, PersonRole role) {
+        private Stream<StubMoviePersonDTO> parsePersonField(JsonNode node, String field, PersonRole role) {
             String persons = node.get(field).asText();
             if (persons.equals(CustomMovieDeserializer.NOT_APPLICABLE)) {
                 return Stream.empty();
             }
             return Stream.of(persons.split(CustomMovieDeserializer.PERSON_SPLIT_PATTERN))
                 .map(PersonDTO::new)
-                .map(personDTO -> new MoviePersonStubDataDTO(role, personDTO));
+                .map(personDTO -> new StubMoviePersonDTO(role, personDTO));
         }
     }
 
     /**
      * Parse json into this class before saving it
      */
-    static class MovieData {
+    static class StubMovieDTO {
         private MovieDTO movieDTO;
-        private Set<MoviePersonStubDataDTO> moviePersonStubDataDTOs;
+        private Set<StubMoviePersonDTO> stubMoviePersonDTOS;
         private Set<CategoryDTO> categoryDTOs;
 
-        MovieData(MovieDTO movieDTO, Set<MoviePersonStubDataDTO> moviePersonStubDataDTOs, Set<CategoryDTO> categoryDTOs) {
+        StubMovieDTO(MovieDTO movieDTO, Set<StubMoviePersonDTO> stubMoviePersonDTOS, Set<CategoryDTO> categoryDTOs) {
             this.movieDTO = movieDTO;
-            this.moviePersonStubDataDTOs = moviePersonStubDataDTOs;
+            this.stubMoviePersonDTOS = stubMoviePersonDTOS;
             this.categoryDTOs = categoryDTOs;
         }
 
@@ -194,8 +192,8 @@ public class StubData implements CommandLineRunner {
             return movieDTO;
         }
 
-        Set<MoviePersonStubDataDTO> getMoviePersonStubDataDTOs() {
-            return moviePersonStubDataDTOs;
+        Set<StubMoviePersonDTO> getStubMoviePersonDTOS() {
+            return stubMoviePersonDTOS;
         }
 
         Set<CategoryDTO> getCategoryDTOs() {
@@ -206,11 +204,11 @@ public class StubData implements CommandLineRunner {
     /**
      * Hold relationship between person and role for a movie
      */
-    static class MoviePersonStubDataDTO {
+    static class StubMoviePersonDTO {
         private PersonRole role;
         private PersonDTO personDTO;
 
-        MoviePersonStubDataDTO(PersonRole role, PersonDTO personDTO) {
+        StubMoviePersonDTO(PersonRole role, PersonDTO personDTO) {
             this.role = role;
             this.personDTO = personDTO;
         }
