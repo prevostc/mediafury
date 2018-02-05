@@ -12,7 +12,8 @@ import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.inter
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
 import { MediafurySharedModule, UserRouteAccessService } from './shared';
 import { MediafuryAppRoutingModule} from './app-routing.module';
-import { MediafuryHomeModule } from './home/home.module';
+import { MediafuryAboutModule } from './about';
+import { MediafuryFuryModule } from './fury';
 import { MediafuryAdminModule } from './admin/admin.module';
 import { MediafuryAccountModule } from './account/account.module';
 import { MediafuryEntityModule } from './entities/entity.module';
@@ -34,7 +35,8 @@ import {
         MediafuryAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
         MediafurySharedModule,
-        MediafuryHomeModule,
+        MediafuryAboutModule,
+        MediafuryFuryModule,
         MediafuryAdminModule,
         MediafuryAccountModule,
         MediafuryEntityModule,
@@ -46,7 +48,7 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent
+        FooterComponent,
     ],
     providers: [
         ProfileService,

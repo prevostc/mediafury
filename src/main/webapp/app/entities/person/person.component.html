@@ -1,5 +1,5 @@
 <div>
-    <h2>
+    <h2 *jhiHasAnyAuthority="'ROLE_ADMIN'">
         <span jhiTranslate="mediafuryApp.person.home.title">People</span>
         <button class="btn btn-primary float-right jh-create-entity create-person" [routerLink]="['/', { outlets: { popup: ['person-new'] } }]">
             <span class="fa fa-plus"></span>
@@ -33,7 +33,8 @@
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                                type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'person/'+ person.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -41,7 +42,8 @@
                             <span class="fa fa-pencil"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                                type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'person/'+ person.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

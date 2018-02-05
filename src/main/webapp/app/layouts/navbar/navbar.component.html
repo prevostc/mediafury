@@ -13,8 +13,8 @@
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <span>
-                        <i class="fa fa-home" aria-hidden="true"></i>
-                        <span jhiTranslate="global.menu.home">Home</span>
+                        <i class="fa fa-fire" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.fury">Fury</span>
                     </span>
                 </a>
             </li>
@@ -47,13 +47,13 @@
                             <span jhiTranslate="global.menu.entities.person">Person</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="movie-person" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.moviePerson">Movie Person</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="vote" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.vote">Vote</span>
@@ -178,6 +178,14 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="/about" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fa fa-info" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.about">About</span>
+                    </span>
+                </a>
             </li>
         </ul>
     </div>

@@ -32,6 +32,11 @@ export class MovieService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    random(): Observable<HttpResponse<Movie>> {
+        return this.http.get<Movie>(`${this.resourceUrl}/random`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
     query(req?: any): Observable<HttpResponse<Movie[]>> {
         const options = createRequestOption(req);
         return this.http.get<Movie[]>(this.resourceUrl, { params: options, observe: 'response' })

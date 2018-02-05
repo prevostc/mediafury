@@ -32,7 +32,7 @@ export const voteRoute: Routes = [
             'pagingParams': VoteResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.vote.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const voteRoute: Routes = [
         path: 'vote/:id',
         component: VoteDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.vote.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const votePopupRoute: Routes = [
         path: 'vote-new',
         component: VotePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.vote.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const votePopupRoute: Routes = [
         path: 'vote/:id/edit',
         component: VotePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.vote.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const votePopupRoute: Routes = [
         path: 'vote/:id/delete',
         component: VoteDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.vote.home.title'
         },
         canActivate: [UserRouteAccessService],

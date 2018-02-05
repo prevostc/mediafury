@@ -32,7 +32,7 @@ export const moviePersonRoute: Routes = [
             'pagingParams': MoviePersonResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.moviePerson.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const moviePersonRoute: Routes = [
         path: 'movie-person/:id',
         component: MoviePersonDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.moviePerson.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const moviePersonPopupRoute: Routes = [
         path: 'movie-person-new',
         component: MoviePersonPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.moviePerson.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const moviePersonPopupRoute: Routes = [
         path: 'movie-person/:id/edit',
         component: MoviePersonPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.moviePerson.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const moviePersonPopupRoute: Routes = [
         path: 'movie-person/:id/delete',
         component: MoviePersonDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.moviePerson.home.title'
         },
         canActivate: [UserRouteAccessService],

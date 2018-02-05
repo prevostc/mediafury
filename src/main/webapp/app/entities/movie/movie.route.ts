@@ -52,7 +52,7 @@ export const moviePopupRoute: Routes = [
         path: 'movie-new',
         component: MoviePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.movie.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const moviePopupRoute: Routes = [
         path: 'movie/:id/edit',
         component: MoviePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.movie.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const moviePopupRoute: Routes = [
         path: 'movie/:id/delete',
         component: MovieDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.movie.home.title'
         },
         canActivate: [UserRouteAccessService],

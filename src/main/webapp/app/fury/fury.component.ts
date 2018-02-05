@@ -5,14 +5,14 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginModalService, Principal } from '../shared';
 
 @Component({
-    selector: 'jhi-home',
-    templateUrl: './home.component.html',
+    selector: 'jhi-fury',
+    templateUrl: './fury.component.html',
     styleUrls: [
-        'home.scss'
+        'fury.scss'
     ]
 
 })
-export class HomeComponent implements OnInit {
+export class FuryComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
 

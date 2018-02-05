@@ -38,7 +38,8 @@
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button"
+    <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+            type="button"
             [routerLink]="['/', { outlets: { popup: 'movie/'+ movie.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"

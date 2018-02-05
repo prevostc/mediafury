@@ -2,16 +2,18 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { MediafurySharedModule } from '../shared';
+import { MediafuryMovieModule } from '../entities/movie/movie.module';
 
-import { HOME_ROUTE, HomeComponent } from './';
+import { FURY_ROUTE, FuryComponent } from './';
 
 @NgModule({
     imports: [
         MediafurySharedModule,
-        RouterModule.forChild([ HOME_ROUTE ])
+        MediafuryMovieModule,
+        RouterModule.forChild([ FURY_ROUTE ])
     ],
     declarations: [
-        HomeComponent,
+        FuryComponent,
     ],
     entryComponents: [
     ],
@@ -19,4 +21,4 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class MediafuryHomeModule {}
+export class MediafuryFuryModule {}

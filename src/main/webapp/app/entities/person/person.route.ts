@@ -52,7 +52,7 @@ export const personPopupRoute: Routes = [
         path: 'person-new',
         component: PersonPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.person.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const personPopupRoute: Routes = [
         path: 'person/:id/edit',
         component: PersonPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.person.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const personPopupRoute: Routes = [
         path: 'person/:id/delete',
         component: PersonDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'mediafuryApp.person.home.title'
         },
         canActivate: [UserRouteAccessService],

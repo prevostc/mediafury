@@ -9,6 +9,7 @@ import {
     MovieDetailComponent,
     MovieDialogComponent,
     MoviePopupComponent,
+    MovieRandomComponent,
     MovieDeletePopupComponent,
     MovieDeleteDialogComponent,
     movieRoute,
@@ -33,6 +34,7 @@ const ENTITY_STATES = [
         MovieDeleteDialogComponent,
         MoviePopupComponent,
         MovieDeletePopupComponent,
+        MovieRandomComponent,
     ],
     entryComponents: [
         MovieComponent,
@@ -46,6 +48,9 @@ const ENTITY_STATES = [
         MoviePopupService,
         MovieResolvePagingParams,
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    exports: [
+        MovieRandomComponent
+    ],
 })
 export class MediafuryMovieModule {}
