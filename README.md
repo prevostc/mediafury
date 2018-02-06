@@ -4,6 +4,25 @@
 # mediafury
 This application was generated using JHipster 4.14.0, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.14.0](http://www.jhipster.tech/documentation-archive/v4.14.0).
 
+# todo
+
+* vote for a movie and change ELO
+* fix email bug
+* display movie grid by category
+* display movie grid by person
+* display category and person grids by movie
+* proper title on detail pages
+* click on fury or home reloads fury
+* footer + header
+* vote animations
+* smaller plot on fury page
+* admin vote changes ELO OR admin vote picks movies OR disable admin vote
+* Special Podium-Like ranking page (only sho the top 3)
+* disable multiple votes ? or limit votes in some way (by last vote date, vote count per day)
+* unit / int tests (spring + angular)
+* show user votes in admin user list or detail page
+* show random movies for unlogged users OR display a better "please log in" message
+
 # import movie data
 
 Place a movie data file inside src/main/resources/data/movies.json
