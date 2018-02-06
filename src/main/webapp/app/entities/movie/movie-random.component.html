@@ -1,8 +1,8 @@
 <div *ngIf="movie">
     <jhi-alert-error></jhi-alert-error>
     <div class="row">
-        <div class="col-md-12">{{movie.title}} - {{movie.year}}</div>
-        <div class="col-md-12"><img src="{{movie.imageUrl}}"></div>
-        <blockquote class="col-md-12">{{movie.plot}}</blockquote>
+        <div class="col-md-12 text-center"><h3>{{movie.title}} - {{movie.year}}</h3></div>
+        <div class="col-md-12 text-center"><img class="img-responsive center-block" src="{{movie.imageUrl}}"></div>
+        <blockquote class="col-md-12 text-center">{{movie.plot}}</blockquote>
     </div>
 </div>
