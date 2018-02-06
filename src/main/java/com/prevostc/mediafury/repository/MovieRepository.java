@@ -1,6 +1,8 @@
 package com.prevostc.mediafury.repository;
 
 import com.prevostc.mediafury.domain.Movie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -22,4 +24,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     Optional<Movie> findOneByTitleAndYear(String title, Integer year);
 
+    Page<Movie> findAllByImageUrlNotNull(Pageable pageable);
+
+    Long countByImageUrlNotNull();
 }

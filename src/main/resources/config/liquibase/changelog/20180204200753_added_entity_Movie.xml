@@ -29,7 +29,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="plot" type="varchar(2000)">
+            <column name="plot" type="text">
                 <constraints nullable="true" />
             </column>
 
@@ -43,7 +43,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="movie_category">
             <column name="categories_id" type="bigint">
                 <constraints nullable="false"/>
@@ -54,7 +54,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="movies_id, categories_id" tableName="movie_category"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

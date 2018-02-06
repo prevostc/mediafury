@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {MovieService} from './movie.service';
-import {Movie} from './movie.model';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {MovieService} from '../movie.service';
+import {Movie} from '../movie.model';
 import {HttpResponse} from '@angular/common/http';
 
 @Component({
@@ -11,6 +11,8 @@ import {HttpResponse} from '@angular/common/http';
 export class MovieRandomComponent implements OnInit {
 
     movie: Movie;
+    @Output() movieChange = new EventEmitter<Movie>();
+    @Output() onClick = new EventEmitter<Movie>();
 
     constructor(
         private movieService: MovieService,
@@ -25,6 +27,11 @@ export class MovieRandomComponent implements OnInit {
         this.movieService.random()
             .subscribe((movieResponse: HttpResponse<Movie>) => {
                 this.movie = movieResponse.body;
+                this.movieChange.emit(this.movie);
             });
+    }
+
+    clicked() {
+        this.onClick.emit(this.movie);
     }
 }

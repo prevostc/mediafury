@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { MediafuryTestModule } from '../../../test.module';
-import { MovieRandomComponent } from '../../../../../../main/webapp/app/entities/movie/movie-random.component';
+import { MovieRandomComponent } from '../../../../../../main/webapp/app/entities/movie/movie-random/movie-random.component';
 import { MovieService } from '../../../../../../main/webapp/app/entities/movie/movie.service';
 import { Movie } from '../../../../../../main/webapp/app/entities/movie/movie.model';
 

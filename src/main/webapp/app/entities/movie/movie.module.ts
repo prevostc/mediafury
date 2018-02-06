@@ -16,6 +16,7 @@ import {
     moviePopupRoute,
     MovieResolvePagingParams,
 } from './';
+import { MoviePosterComponent } from './movie-poster/movie-poster.component';
 
 const ENTITY_STATES = [
     ...movieRoute,
@@ -35,6 +36,7 @@ const ENTITY_STATES = [
         MoviePopupComponent,
         MovieDeletePopupComponent,
         MovieRandomComponent,
+        MoviePosterComponent,
     ],
     entryComponents: [
         MovieComponent,
@@ -50,7 +52,8 @@ const ENTITY_STATES = [
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     exports: [
-        MovieRandomComponent
+        MovieRandomComponent,
+        MoviePosterComponent
     ],
 })
 export class MediafuryMovieModule {}

@@ -31,7 +31,7 @@
                 <td>{{movie.title}}</td>
                 <td>{{movie.year}}</td>
                 <td>{{movie.plot}}</td>
-                <td><img height="100" src="{{movie.imageUrl}}"></td>
+                <td><jhi-movie-poster height="100" [movie]="movie"></jhi-movie-poster></td>
                 <td>{{movie.elo}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

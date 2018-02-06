@@ -108,10 +108,13 @@ public class MovieService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public MovieDTO findOneRandom() {
-        Long qty = movieRepository.count();
+    public MovieDTO findOneRandomWithImage() {
+        log.debug("Request random movie: {}");
+
+        // only movies with images are featured in the front page
+        Long qty = movieRepository.countByImageUrlNotNull();
         int idx = this.random.nextInt(0, qty.intValue());
-        Page<Movie> page = movieRepository.findAll(new PageRequest(idx, 1));
+        Page<Movie> page = movieRepository.findAllByImageUrlNotNull(new PageRequest(idx, 1));
         return movieMapper.toDto(page.getContent().get(0));
     }
 }

@@ -22,7 +22,7 @@ public class MovieDTO implements Serializable {
     @Max(value = 3000)
     private Integer year;
 
-    @Size(max = 2000)
+    @Size(max = 10000)
     private String plot;
 
     @Size(max = 2000)

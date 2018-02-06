@@ -119,12 +119,8 @@ public class StubData implements CommandLineRunner {
                 // set movie fields
                 movieDTO.setElo(1000);
                 movieDTO.setTitle(node.get("Title").asText());
-                String poster = node.get("Poster").asText();
-                movieDTO.setImageUrl(
-                    poster.equals(CustomMovieDeserializer.NOT_APPLICABLE)
-                        ? "http://via.placeholder.com/300x445?text=N/A"
-                        : poster
-                );
+                movieDTO.setPlot(filterNotApplicable(node.get("Plot").asText()));
+                movieDTO.setImageUrl(filterNotApplicable(node.get("Poster").asText()));
                 movieDTO.setYear(Integer.parseInt(node.get("Year").asText().substring(0, 4)));
 
                 // fetch all categories
@@ -171,6 +167,15 @@ public class StubData implements CommandLineRunner {
             return Stream.of(persons.split(CustomMovieDeserializer.PERSON_SPLIT_PATTERN))
                 .map(PersonDTO::new)
                 .map(personDTO -> new StubMoviePersonDTO(role, personDTO));
+        }
+
+        /**
+         * Nullify N/A strings
+         * @param input
+         * @return
+         */
+        private String filterNotApplicable(String input) {
+            return input.equals(CustomMovieDeserializer.NOT_APPLICABLE) ? null : input;
         }
     }
 

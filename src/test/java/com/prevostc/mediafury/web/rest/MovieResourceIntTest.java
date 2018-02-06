@@ -213,6 +213,19 @@ public class MovieResourceIntTest {
 
     @Test
     @Transactional
+    public void getRandomMovie() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get the movie
+        restMovieMockMvc.perform(get("/api/movies/random"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+
+    @Test
+    @Transactional
     public void getNonExistingMovie() throws Exception {
         // Get the movie
         restMovieMockMvc.perform(get("/api/movies/{id}", Long.MAX_VALUE))

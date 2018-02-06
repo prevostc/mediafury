@@ -110,7 +110,7 @@ public class MovieResource {
     @Timed
     public ResponseEntity<MovieDTO> getRandom() {
         log.debug("REST request to get random Movie : {}");
-        MovieDTO movieDTO = movieService.findOneRandom();
+        MovieDTO movieDTO = movieService.findOneRandomWithImage();
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(movieDTO));
     }
 

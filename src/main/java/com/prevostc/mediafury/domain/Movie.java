@@ -37,7 +37,8 @@ public class Movie implements Serializable {
     @Column(name = "jhi_year")
     private Integer year;
 
-    @Size(max = 2000)
+    @Size(max = 10000)
+    @Lob
     @Column(name = "plot", length = 2000)
     private String plot;
 
