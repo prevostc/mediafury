@@ -19,7 +19,9 @@
             "winnerEloDiff": "Winner Elo Diff",
             "loserEloDiff": "Loser Elo Diff",
             "winner": "Winner",
-            "loser": "Loser"
+            "loser": "Loser",
+            "createdBy": "Created By",
+            "createdDate": "Created Date"
         }
     }
 }

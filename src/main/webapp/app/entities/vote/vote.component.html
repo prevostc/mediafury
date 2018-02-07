@@ -21,6 +21,8 @@
             <th jhiSortBy="loserEloDiff"><span jhiTranslate="mediafuryApp.vote.loserEloDiff">Loser Elo Diff</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="winnerTitle"><span jhiTranslate="mediafuryApp.vote.winner">Winner</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="loserTitle"><span jhiTranslate="mediafuryApp.vote.loser">Loser</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createdBy"><span jhiTranslate="mediafuryApp.vote.createdBy">Created By</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="createdDate"><span jhiTranslate="mediafuryApp.vote.createdDate">Created Date</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -39,6 +41,8 @@
                         <a [routerLink]="['../movie', vote.loserId  ]" >{{vote.loserTitle}}</a>
                     </div>
                 </td>
+                <td>{{vote.createdBy}}</td>
+                <td>{{vote.createdDate}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

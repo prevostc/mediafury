@@ -30,7 +30,6 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-@Secured(AuthoritiesConstants.ADMIN)
 public class VoteResource {
 
     private final Logger log = LoggerFactory.getLogger(VoteResource.class);
@@ -52,6 +51,7 @@ public class VoteResource {
      */
     @PostMapping("/votes")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<VoteDTO> createVote(@Valid @RequestBody VoteDTO voteDTO) throws URISyntaxException {
         log.debug("REST request to save Vote : {}", voteDTO);
         if (voteDTO.getId() != null) {
@@ -74,6 +74,7 @@ public class VoteResource {
      */
     @PutMapping("/votes")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<VoteDTO> updateVote(@Valid @RequestBody VoteDTO voteDTO) throws URISyntaxException {
         log.debug("REST request to update Vote : {}", voteDTO);
         if (voteDTO.getId() == null) {
@@ -93,6 +94,7 @@ public class VoteResource {
      */
     @GetMapping("/votes")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<VoteDTO>> getAllVotes(Pageable pageable) {
         log.debug("REST request to get a page of Votes");
         Page<VoteDTO> page = voteService.findAll(pageable);
@@ -108,6 +110,7 @@ public class VoteResource {
      */
     @GetMapping("/votes/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<VoteDTO> getVote(@PathVariable Long id) {
         log.debug("REST request to get Vote : {}", id);
         VoteDTO voteDTO = voteService.findOne(id);
@@ -122,6 +125,7 @@ public class VoteResource {
      */
     @DeleteMapping("/votes/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteVote(@PathVariable Long id) {
         log.debug("REST request to delete Vote : {}", id);
         voteService.delete(id);
@@ -137,6 +141,7 @@ public class VoteResource {
      */
     @PostMapping("/votes/fury")
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<VoteDTO> createFury(@Valid @RequestBody VoteDTO voteDTO) throws URISyntaxException {
         log.debug("REST request to fury: {}", voteDTO);
 

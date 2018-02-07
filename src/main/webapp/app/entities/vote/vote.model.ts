@@ -7,6 +7,8 @@ export class Vote implements BaseEntity {
         public loserEloDiff?: number,
         public winnerId?: number,
         public loserId?: number,
+        public createdBy?: string,
+        public createdDate?: string,
     ) {
     }
 }
