@@ -16,7 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -40,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see VoteResource
  */
 @RunWith(SpringRunner.class)
+@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = CommandLineRunner.class))
 @SpringBootTest(classes = MediafuryApp.class)
 public class VoteResourceIntTest {
 
@@ -97,11 +101,13 @@ public class VoteResourceIntTest {
             .loserEloDiff(DEFAULT_LOSER_ELO_DIFF);
         // Add required entity
         Movie winner = MovieResourceIntTest.createEntity(em);
+        winner.setElo(1000);
         em.persist(winner);
         em.flush();
         vote.setWinner(winner);
         // Add required entity
         Movie loser = MovieResourceIntTest.createEntity(em);
+        loser.setElo(1000);
         em.persist(loser);
         em.flush();
         vote.setLoser(loser);
@@ -131,6 +137,30 @@ public class VoteResourceIntTest {
         Vote testVote = voteList.get(voteList.size() - 1);
         assertThat(testVote.getWinnerEloDiff()).isEqualTo(DEFAULT_WINNER_ELO_DIFF);
         assertThat(testVote.getLoserEloDiff()).isEqualTo(DEFAULT_LOSER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void createFury() throws Exception {
+        int databaseSizeBeforeCreate = voteRepository.findAll().size();
+
+        // Create the Vote with ids only
+        VoteDTO voteDTO = new VoteDTO();
+        voteDTO.setLoserId(vote.getLoser().getId());
+        voteDTO.setWinnerId(vote.getWinner().getId());
+
+        // call the entry point
+        restVoteMockMvc.perform(post("/api/votes/fury")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(voteDTO)))
+            .andExpect(status().isCreated());
+
+        // Validate the Vote in the database
+        List<Vote> voteList = voteRepository.findAll();
+        assertThat(voteList).hasSize(databaseSizeBeforeCreate + 1);
+        Vote testVote = voteList.get(voteList.size() - 1);
+        assertThat(testVote.getWinnerEloDiff()).isEqualTo(16);
+        assertThat(testVote.getLoserEloDiff()).isEqualTo(-16);
     }
 
     @Test

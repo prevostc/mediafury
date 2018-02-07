@@ -127,4 +127,23 @@ public class VoteResource {
         voteService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * POST  /votes/fury : Create a vote, compute ELO diffs and apply them
+     *
+     * @param voteDTO the voteDTO to process
+     * @return the ResponseEntity with status 201 (Created) and with body the new voteDTO, or with status 400 (Bad Request) if the vote has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/votes/fury")
+    @Timed
+    public ResponseEntity<VoteDTO> createFury(@Valid @RequestBody VoteDTO voteDTO) throws URISyntaxException {
+        log.debug("REST request to fury: {}", voteDTO);
+
+        VoteDTO result = voteService.computeEloDiffUpdateMoviesAndSave(voteDTO);
+
+        return ResponseEntity.created(new URI("/api/votes/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
 }

@@ -21,6 +21,12 @@ export class VoteService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    fury(vote: Vote): Observable<EntityResponseType> {
+        const copy = this.convert(vote);
+        return this.http.post<Vote>(this.resourceUrl + '/fury', copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
     update(vote: Vote): Observable<EntityResponseType> {
         const copy = this.convert(vote);
         return this.http.put<Vote>(this.resourceUrl, copy, { observe: 'response' })

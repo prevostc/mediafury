@@ -6,7 +6,7 @@ This application was generated using JHipster 4.14.0, you can find documentation
 
 # todo
 
-* vote for a movie and change ELO
+* random movie loading animation
 * fix email bug
 * display movie grid by category
 * display movie grid by person

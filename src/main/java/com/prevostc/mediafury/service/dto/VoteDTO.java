@@ -1,6 +1,7 @@
 package com.prevostc.mediafury.service.dto;
 
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -16,10 +17,12 @@ public class VoteDTO implements Serializable {
 
     private Integer loserEloDiff;
 
+    @NotNull
     private Long winnerId;
 
     private String winnerTitle;
 
+    @NotNull
     private Long loserId;
 
     private String loserTitle;

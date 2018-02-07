@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Movie} from '../../entities/movie';
+import {Vote, VoteService} from '../../entities/vote';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {JhiAlertService} from 'ng-jhipster';
 
 @Component({
     selector: 'jhi-fury-contest',
@@ -12,18 +15,39 @@ export class FuryContestComponent implements OnInit {
 
     leftMovie: Movie;
     rightMovie: Movie;
+    fetching = false;
 
-    constructor() {
+    constructor(
+        private voteService: VoteService,
+        private jhiAlertService: JhiAlertService,
+    ) {
     }
 
     ngOnInit() {
     }
 
     movieClicked(movie: Movie) {
+        const vote = new Vote();
         if (movie === this.leftMovie) {
-            console.log('Left movie clicked', this.leftMovie);
+            vote.winnerId = this.leftMovie.id;
+            vote.loserId = this.rightMovie.id;
         } else {
-            console.log('Right movie clicked', this.rightMovie);
+            vote.winnerId = this.rightMovie.id;
+            vote.loserId = this.leftMovie.id;
         }
+
+        // here trigger selection animation
+        this.fetching = true;
+
+        this.voteService.fury(vote)
+            .subscribe(
+                (res: HttpResponse<Vote>) => {
+                    this.fetching = false;
+                },
+                (res: HttpErrorResponse) => {
+                    this.fetching = false;
+                    this.jhiAlertService.error(res.message, null, null);
+                }
+            );
     }
 }

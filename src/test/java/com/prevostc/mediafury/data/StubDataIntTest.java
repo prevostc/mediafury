@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MediafuryApp.class)
-public class StubDataUnitTest {
+public class StubDataIntTest {
 
     private StubData stubData;
 
