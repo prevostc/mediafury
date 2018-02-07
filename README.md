@@ -6,11 +6,12 @@ This application was generated using JHipster 4.14.0, you can find documentation
 
 # todo
 
+* display movie grid by category OR add filter on existing grids  
+* display movie grid by person OR add filter on existing grids  
+* display category and person grids by movie OR add filter on existing grids  
+* list searches ?
 * random movie loading animation
 * fix email bug
-* display movie grid by category
-* display movie grid by person
-* display category and person grids by movie
 * proper title on detail pages
 * click on fury or home reloads fury
 * footer + header
