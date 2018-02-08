@@ -10,16 +10,15 @@ import com.prevostc.mediafury.service.VoteService;
 import com.prevostc.mediafury.service.dto.VoteDTO;
 import com.prevostc.mediafury.service.mapper.VoteMapper;
 import com.prevostc.mediafury.web.rest.errors.ExceptionTranslator;
+import com.prevostc.mediafury.service.dto.VoteCriteria;
+import com.prevostc.mediafury.service.VoteQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -43,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see VoteResource
  */
 @RunWith(SpringRunner.class)
-@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = CommandLineRunner.class))
 @SpringBootTest(classes = MediafuryApp.class)
 public class VoteResourceIntTest {
 
@@ -61,6 +59,9 @@ public class VoteResourceIntTest {
 
     @Autowired
     private VoteService voteService;
+
+    @Autowired
+    private VoteQueryService voteQueryService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -81,7 +82,7 @@ public class VoteResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VoteResource voteResource = new VoteResource(voteService);
+        final VoteResource voteResource = new VoteResource(voteService, voteQueryService);
         this.restVoteMockMvc = MockMvcBuilders.standaloneSetup(voteResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -101,13 +102,11 @@ public class VoteResourceIntTest {
             .loserEloDiff(DEFAULT_LOSER_ELO_DIFF);
         // Add required entity
         Movie winner = MovieResourceIntTest.createEntity(em);
-        winner.setElo(1000);
         em.persist(winner);
         em.flush();
         vote.setWinner(winner);
         // Add required entity
         Movie loser = MovieResourceIntTest.createEntity(em);
-        loser.setElo(1000);
         em.persist(loser);
         em.flush();
         vote.setLoser(loser);
@@ -137,30 +136,6 @@ public class VoteResourceIntTest {
         Vote testVote = voteList.get(voteList.size() - 1);
         assertThat(testVote.getWinnerEloDiff()).isEqualTo(DEFAULT_WINNER_ELO_DIFF);
         assertThat(testVote.getLoserEloDiff()).isEqualTo(DEFAULT_LOSER_ELO_DIFF);
-    }
-
-    @Test
-    @Transactional
-    public void createFury() throws Exception {
-        int databaseSizeBeforeCreate = voteRepository.findAll().size();
-
-        // Create the Vote with ids only
-        VoteDTO voteDTO = new VoteDTO();
-        voteDTO.setLoserId(vote.getLoser().getId());
-        voteDTO.setWinnerId(vote.getWinner().getId());
-
-        // call the entry point
-        restVoteMockMvc.perform(post("/api/votes/fury")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(voteDTO)))
-            .andExpect(status().isCreated());
-
-        // Validate the Vote in the database
-        List<Vote> voteList = voteRepository.findAll();
-        assertThat(voteList).hasSize(databaseSizeBeforeCreate + 1);
-        Vote testVote = voteList.get(voteList.size() - 1);
-        assertThat(testVote.getWinnerEloDiff()).isEqualTo(16);
-        assertThat(testVote.getLoserEloDiff()).isEqualTo(-16);
     }
 
     @Test
@@ -212,6 +187,199 @@ public class VoteResourceIntTest {
             .andExpect(jsonPath("$.winnerEloDiff").value(DEFAULT_WINNER_ELO_DIFF))
             .andExpect(jsonPath("$.loserEloDiff").value(DEFAULT_LOSER_ELO_DIFF));
     }
+
+    @Test
+    @Transactional
+    public void getAllVotesByWinnerEloDiffIsEqualToSomething() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where winnerEloDiff equals to DEFAULT_WINNER_ELO_DIFF
+        defaultVoteShouldBeFound("winnerEloDiff.equals=" + DEFAULT_WINNER_ELO_DIFF);
+
+        // Get all the voteList where winnerEloDiff equals to UPDATED_WINNER_ELO_DIFF
+        defaultVoteShouldNotBeFound("winnerEloDiff.equals=" + UPDATED_WINNER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByWinnerEloDiffIsInShouldWork() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where winnerEloDiff in DEFAULT_WINNER_ELO_DIFF or UPDATED_WINNER_ELO_DIFF
+        defaultVoteShouldBeFound("winnerEloDiff.in=" + DEFAULT_WINNER_ELO_DIFF + "," + UPDATED_WINNER_ELO_DIFF);
+
+        // Get all the voteList where winnerEloDiff equals to UPDATED_WINNER_ELO_DIFF
+        defaultVoteShouldNotBeFound("winnerEloDiff.in=" + UPDATED_WINNER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByWinnerEloDiffIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where winnerEloDiff is not null
+        defaultVoteShouldBeFound("winnerEloDiff.specified=true");
+
+        // Get all the voteList where winnerEloDiff is null
+        defaultVoteShouldNotBeFound("winnerEloDiff.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByWinnerEloDiffIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where winnerEloDiff greater than or equals to DEFAULT_WINNER_ELO_DIFF
+        defaultVoteShouldBeFound("winnerEloDiff.greaterOrEqualThan=" + DEFAULT_WINNER_ELO_DIFF);
+
+        // Get all the voteList where winnerEloDiff greater than or equals to UPDATED_WINNER_ELO_DIFF
+        defaultVoteShouldNotBeFound("winnerEloDiff.greaterOrEqualThan=" + UPDATED_WINNER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByWinnerEloDiffIsLessThanSomething() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where winnerEloDiff less than or equals to DEFAULT_WINNER_ELO_DIFF
+        defaultVoteShouldNotBeFound("winnerEloDiff.lessThan=" + DEFAULT_WINNER_ELO_DIFF);
+
+        // Get all the voteList where winnerEloDiff less than or equals to UPDATED_WINNER_ELO_DIFF
+        defaultVoteShouldBeFound("winnerEloDiff.lessThan=" + UPDATED_WINNER_ELO_DIFF);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllVotesByLoserEloDiffIsEqualToSomething() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where loserEloDiff equals to DEFAULT_LOSER_ELO_DIFF
+        defaultVoteShouldBeFound("loserEloDiff.equals=" + DEFAULT_LOSER_ELO_DIFF);
+
+        // Get all the voteList where loserEloDiff equals to UPDATED_LOSER_ELO_DIFF
+        defaultVoteShouldNotBeFound("loserEloDiff.equals=" + UPDATED_LOSER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByLoserEloDiffIsInShouldWork() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where loserEloDiff in DEFAULT_LOSER_ELO_DIFF or UPDATED_LOSER_ELO_DIFF
+        defaultVoteShouldBeFound("loserEloDiff.in=" + DEFAULT_LOSER_ELO_DIFF + "," + UPDATED_LOSER_ELO_DIFF);
+
+        // Get all the voteList where loserEloDiff equals to UPDATED_LOSER_ELO_DIFF
+        defaultVoteShouldNotBeFound("loserEloDiff.in=" + UPDATED_LOSER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByLoserEloDiffIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where loserEloDiff is not null
+        defaultVoteShouldBeFound("loserEloDiff.specified=true");
+
+        // Get all the voteList where loserEloDiff is null
+        defaultVoteShouldNotBeFound("loserEloDiff.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByLoserEloDiffIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where loserEloDiff greater than or equals to DEFAULT_LOSER_ELO_DIFF
+        defaultVoteShouldBeFound("loserEloDiff.greaterOrEqualThan=" + DEFAULT_LOSER_ELO_DIFF);
+
+        // Get all the voteList where loserEloDiff greater than or equals to UPDATED_LOSER_ELO_DIFF
+        defaultVoteShouldNotBeFound("loserEloDiff.greaterOrEqualThan=" + UPDATED_LOSER_ELO_DIFF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllVotesByLoserEloDiffIsLessThanSomething() throws Exception {
+        // Initialize the database
+        voteRepository.saveAndFlush(vote);
+
+        // Get all the voteList where loserEloDiff less than or equals to DEFAULT_LOSER_ELO_DIFF
+        defaultVoteShouldNotBeFound("loserEloDiff.lessThan=" + DEFAULT_LOSER_ELO_DIFF);
+
+        // Get all the voteList where loserEloDiff less than or equals to UPDATED_LOSER_ELO_DIFF
+        defaultVoteShouldBeFound("loserEloDiff.lessThan=" + UPDATED_LOSER_ELO_DIFF);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllVotesByWinnerIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Movie winner = MovieResourceIntTest.createEntity(em);
+        em.persist(winner);
+        em.flush();
+        vote.setWinner(winner);
+        voteRepository.saveAndFlush(vote);
+        Long winnerId = winner.getId();
+
+        // Get all the voteList where winner equals to winnerId
+        defaultVoteShouldBeFound("winnerId.equals=" + winnerId);
+
+        // Get all the voteList where winner equals to winnerId + 1
+        defaultVoteShouldNotBeFound("winnerId.equals=" + (winnerId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllVotesByLoserIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Movie loser = MovieResourceIntTest.createEntity(em);
+        em.persist(loser);
+        em.flush();
+        vote.setLoser(loser);
+        voteRepository.saveAndFlush(vote);
+        Long loserId = loser.getId();
+
+        // Get all the voteList where loser equals to loserId
+        defaultVoteShouldBeFound("loserId.equals=" + loserId);
+
+        // Get all the voteList where loser equals to loserId + 1
+        defaultVoteShouldNotBeFound("loserId.equals=" + (loserId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultVoteShouldBeFound(String filter) throws Exception {
+        restVoteMockMvc.perform(get("/api/votes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(vote.getId().intValue())))
+            .andExpect(jsonPath("$.[*].winnerEloDiff").value(hasItem(DEFAULT_WINNER_ELO_DIFF)))
+            .andExpect(jsonPath("$.[*].loserEloDiff").value(hasItem(DEFAULT_LOSER_ELO_DIFF)));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultVoteShouldNotBeFound(String filter) throws Exception {
+        restVoteMockMvc.perform(get("/api/votes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

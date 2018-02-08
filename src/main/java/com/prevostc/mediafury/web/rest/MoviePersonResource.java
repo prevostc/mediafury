@@ -7,6 +7,8 @@ import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
 import com.prevostc.mediafury.web.rest.util.PaginationUtil;
 import com.prevostc.mediafury.service.dto.MoviePersonDTO;
+import com.prevostc.mediafury.service.dto.MoviePersonCriteria;
+import com.prevostc.mediafury.service.MoviePersonQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +41,11 @@ public class MoviePersonResource {
 
     private final MoviePersonService moviePersonService;
 
-    public MoviePersonResource(MoviePersonService moviePersonService) {
+    private final MoviePersonQueryService moviePersonQueryService;
+
+    public MoviePersonResource(MoviePersonService moviePersonService, MoviePersonQueryService moviePersonQueryService) {
         this.moviePersonService = moviePersonService;
+        this.moviePersonQueryService = moviePersonQueryService;
     }
 
     /**
@@ -89,13 +94,14 @@ public class MoviePersonResource {
      * GET  /movie-people : get all the moviePeople.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of moviePeople in body
      */
     @GetMapping("/movie-people")
     @Timed
-    public ResponseEntity<List<MoviePersonDTO>> getAllMoviePeople(Pageable pageable) {
-        log.debug("REST request to get a page of MoviePeople");
-        Page<MoviePersonDTO> page = moviePersonService.findAll(pageable);
+    public ResponseEntity<List<MoviePersonDTO>> getAllMoviePeople(MoviePersonCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get MoviePeople by criteria: {}", criteria);
+        Page<MoviePersonDTO> page = moviePersonQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/movie-people");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

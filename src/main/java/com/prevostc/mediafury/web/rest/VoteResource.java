@@ -7,6 +7,8 @@ import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
 import com.prevostc.mediafury.web.rest.util.PaginationUtil;
 import com.prevostc.mediafury.service.dto.VoteDTO;
+import com.prevostc.mediafury.service.dto.VoteCriteria;
+import com.prevostc.mediafury.service.VoteQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +40,11 @@ public class VoteResource {
 
     private final VoteService voteService;
 
-    public VoteResource(VoteService voteService) {
+    private final VoteQueryService voteQueryService;
+
+    public VoteResource(VoteService voteService, VoteQueryService voteQueryService) {
         this.voteService = voteService;
+        this.voteQueryService = voteQueryService;
     }
 
     /**
@@ -90,14 +95,14 @@ public class VoteResource {
      * GET  /votes : get all the votes.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of votes in body
      */
     @GetMapping("/votes")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<VoteDTO>> getAllVotes(Pageable pageable) {
-        log.debug("REST request to get a page of Votes");
-        Page<VoteDTO> page = voteService.findAll(pageable);
+    public ResponseEntity<List<VoteDTO>> getAllVotes(VoteCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Votes by criteria: {}", criteria);
+        Page<VoteDTO> page = voteQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/votes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category>  {
 
     Optional<Category> findOneByName(String name);
 }

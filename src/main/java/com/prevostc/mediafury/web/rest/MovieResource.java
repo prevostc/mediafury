@@ -7,6 +7,8 @@ import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
 import com.prevostc.mediafury.web.rest.util.PaginationUtil;
 import com.prevostc.mediafury.service.dto.MovieDTO;
+import com.prevostc.mediafury.service.dto.MovieCriteria;
+import com.prevostc.mediafury.service.MovieQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +40,11 @@ public class MovieResource {
 
     private final MovieService movieService;
 
-    public MovieResource(MovieService movieService) {
+    private final MovieQueryService movieQueryService;
+
+    public MovieResource(MovieService movieService, MovieQueryService movieQueryService) {
         this.movieService = movieService;
+        this.movieQueryService = movieQueryService;
     }
 
     /**
@@ -90,13 +95,14 @@ public class MovieResource {
      * GET  /movies : get all the movies.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of movies in body
      */
     @GetMapping("/movies")
     @Timed
-    public ResponseEntity<List<MovieDTO>> getAllMovies(Pageable pageable) {
-        log.debug("REST request to get a page of Movies");
-        Page<MovieDTO> page = movieService.findAll(pageable);
+    public ResponseEntity<List<MovieDTO>> getAllMovies(MovieCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Movies by criteria: {}", criteria);
+        Page<MovieDTO> page = movieQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/movies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

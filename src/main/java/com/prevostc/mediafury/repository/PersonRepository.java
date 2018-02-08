@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Long> {
+public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person>  {
 
     Optional<Person> findOneByName(String name);
 }

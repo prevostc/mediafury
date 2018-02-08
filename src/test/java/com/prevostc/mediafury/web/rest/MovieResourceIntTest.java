@@ -3,11 +3,15 @@ package com.prevostc.mediafury.web.rest;
 import com.prevostc.mediafury.MediafuryApp;
 
 import com.prevostc.mediafury.domain.Movie;
+import com.prevostc.mediafury.domain.MoviePerson;
+import com.prevostc.mediafury.domain.Category;
 import com.prevostc.mediafury.repository.MovieRepository;
 import com.prevostc.mediafury.service.MovieService;
 import com.prevostc.mediafury.service.dto.MovieDTO;
 import com.prevostc.mediafury.service.mapper.MovieMapper;
 import com.prevostc.mediafury.web.rest.errors.ExceptionTranslator;
+import com.prevostc.mediafury.service.dto.MovieCriteria;
+import com.prevostc.mediafury.service.MovieQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +70,9 @@ public class MovieResourceIntTest {
     private MovieService movieService;
 
     @Autowired
+    private MovieQueryService movieQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -84,7 +91,7 @@ public class MovieResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MovieResource movieResource = new MovieResource(movieService);
+        final MovieResource movieResource = new MovieResource(movieService, movieQueryService);
         this.restMovieMockMvc = MockMvcBuilders.standaloneSetup(movieResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -223,6 +230,319 @@ public class MovieResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").isNotEmpty());
     }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByTitleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where title equals to DEFAULT_TITLE
+        defaultMovieShouldBeFound("title.equals=" + DEFAULT_TITLE);
+
+        // Get all the movieList where title equals to UPDATED_TITLE
+        defaultMovieShouldNotBeFound("title.equals=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByTitleIsInShouldWork() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where title in DEFAULT_TITLE or UPDATED_TITLE
+        defaultMovieShouldBeFound("title.in=" + DEFAULT_TITLE + "," + UPDATED_TITLE);
+
+        // Get all the movieList where title equals to UPDATED_TITLE
+        defaultMovieShouldNotBeFound("title.in=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByTitleIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where title is not null
+        defaultMovieShouldBeFound("title.specified=true");
+
+        // Get all the movieList where title is null
+        defaultMovieShouldNotBeFound("title.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByYearIsEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where year equals to DEFAULT_YEAR
+        defaultMovieShouldBeFound("year.equals=" + DEFAULT_YEAR);
+
+        // Get all the movieList where year equals to UPDATED_YEAR
+        defaultMovieShouldNotBeFound("year.equals=" + UPDATED_YEAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByYearIsInShouldWork() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where year in DEFAULT_YEAR or UPDATED_YEAR
+        defaultMovieShouldBeFound("year.in=" + DEFAULT_YEAR + "," + UPDATED_YEAR);
+
+        // Get all the movieList where year equals to UPDATED_YEAR
+        defaultMovieShouldNotBeFound("year.in=" + UPDATED_YEAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByYearIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where year is not null
+        defaultMovieShouldBeFound("year.specified=true");
+
+        // Get all the movieList where year is null
+        defaultMovieShouldNotBeFound("year.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByYearIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where year greater than or equals to DEFAULT_YEAR
+        defaultMovieShouldBeFound("year.greaterOrEqualThan=" + DEFAULT_YEAR);
+
+        // Get all the movieList where year greater than or equals to (DEFAULT_YEAR + 1)
+        defaultMovieShouldNotBeFound("year.greaterOrEqualThan=" + (DEFAULT_YEAR + 1));
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByYearIsLessThanSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where year less than or equals to DEFAULT_YEAR
+        defaultMovieShouldNotBeFound("year.lessThan=" + DEFAULT_YEAR);
+
+        // Get all the movieList where year less than or equals to (DEFAULT_YEAR + 1)
+        defaultMovieShouldBeFound("year.lessThan=" + (DEFAULT_YEAR + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMoviesByPlotIsEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where plot equals to DEFAULT_PLOT
+        defaultMovieShouldBeFound("plot.equals=" + DEFAULT_PLOT);
+
+        // Get all the movieList where plot equals to UPDATED_PLOT
+        defaultMovieShouldNotBeFound("plot.equals=" + UPDATED_PLOT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByPlotIsInShouldWork() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where plot in DEFAULT_PLOT or UPDATED_PLOT
+        defaultMovieShouldBeFound("plot.in=" + DEFAULT_PLOT + "," + UPDATED_PLOT);
+
+        // Get all the movieList where plot equals to UPDATED_PLOT
+        defaultMovieShouldNotBeFound("plot.in=" + UPDATED_PLOT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByPlotIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where plot is not null
+        defaultMovieShouldBeFound("plot.specified=true");
+
+        // Get all the movieList where plot is null
+        defaultMovieShouldNotBeFound("plot.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByImageUrlIsEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where imageUrl equals to DEFAULT_IMAGE_URL
+        defaultMovieShouldBeFound("imageUrl.equals=" + DEFAULT_IMAGE_URL);
+
+        // Get all the movieList where imageUrl equals to UPDATED_IMAGE_URL
+        defaultMovieShouldNotBeFound("imageUrl.equals=" + UPDATED_IMAGE_URL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByImageUrlIsInShouldWork() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where imageUrl in DEFAULT_IMAGE_URL or UPDATED_IMAGE_URL
+        defaultMovieShouldBeFound("imageUrl.in=" + DEFAULT_IMAGE_URL + "," + UPDATED_IMAGE_URL);
+
+        // Get all the movieList where imageUrl equals to UPDATED_IMAGE_URL
+        defaultMovieShouldNotBeFound("imageUrl.in=" + UPDATED_IMAGE_URL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByImageUrlIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where imageUrl is not null
+        defaultMovieShouldBeFound("imageUrl.specified=true");
+
+        // Get all the movieList where imageUrl is null
+        defaultMovieShouldNotBeFound("imageUrl.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByEloIsEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where elo equals to DEFAULT_ELO
+        defaultMovieShouldBeFound("elo.equals=" + DEFAULT_ELO);
+
+        // Get all the movieList where elo equals to UPDATED_ELO
+        defaultMovieShouldNotBeFound("elo.equals=" + UPDATED_ELO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByEloIsInShouldWork() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where elo in DEFAULT_ELO or UPDATED_ELO
+        defaultMovieShouldBeFound("elo.in=" + DEFAULT_ELO + "," + UPDATED_ELO);
+
+        // Get all the movieList where elo equals to UPDATED_ELO
+        defaultMovieShouldNotBeFound("elo.in=" + UPDATED_ELO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByEloIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where elo is not null
+        defaultMovieShouldBeFound("elo.specified=true");
+
+        // Get all the movieList where elo is null
+        defaultMovieShouldNotBeFound("elo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByEloIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where elo greater than or equals to DEFAULT_ELO
+        defaultMovieShouldBeFound("elo.greaterOrEqualThan=" + DEFAULT_ELO);
+
+        // Get all the movieList where elo greater than or equals to UPDATED_ELO
+        defaultMovieShouldNotBeFound("elo.greaterOrEqualThan=" + UPDATED_ELO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviesByEloIsLessThanSomething() throws Exception {
+        // Initialize the database
+        movieRepository.saveAndFlush(movie);
+
+        // Get all the movieList where elo less than or equals to DEFAULT_ELO
+        defaultMovieShouldNotBeFound("elo.lessThan=" + DEFAULT_ELO);
+
+        // Get all the movieList where elo less than or equals to UPDATED_ELO
+        defaultMovieShouldBeFound("elo.lessThan=" + UPDATED_ELO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMoviesByMoviePersonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        MoviePerson moviePerson = MoviePersonResourceIntTest.createEntity(em);
+        em.persist(moviePerson);
+        em.flush();
+        movie.addMoviePerson(moviePerson);
+        movieRepository.saveAndFlush(movie);
+        Long moviePersonId = moviePerson.getId();
+
+        // Get all the movieList where moviePerson equals to moviePersonId
+        defaultMovieShouldBeFound("moviePersonId.equals=" + moviePersonId);
+
+        // Get all the movieList where moviePerson equals to moviePersonId + 1
+        defaultMovieShouldNotBeFound("moviePersonId.equals=" + (moviePersonId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMoviesByCategoryIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Category category = CategoryResourceIntTest.createEntity(em);
+        em.persist(category);
+        em.flush();
+        movie.addCategory(category);
+        movieRepository.saveAndFlush(movie);
+        Long categoryId = category.getId();
+
+        // Get all the movieList where category equals to categoryId
+        defaultMovieShouldBeFound("categoryId.equals=" + categoryId);
+
+        // Get all the movieList where category equals to categoryId + 1
+        defaultMovieShouldNotBeFound("categoryId.equals=" + (categoryId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultMovieShouldBeFound(String filter) throws Exception {
+        restMovieMockMvc.perform(get("/api/movies?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(movie.getId().intValue())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+            .andExpect(jsonPath("$.[*].plot").value(hasItem(DEFAULT_PLOT.toString())))
+            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL.toString())))
+            .andExpect(jsonPath("$.[*].elo").value(hasItem(DEFAULT_ELO)));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultMovieShouldNotBeFound(String filter) throws Exception {
+        restMovieMockMvc.perform(get("/api/movies?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

@@ -1,8 +1,8 @@
 
 entity Movie {
-	title String required minlength(1) maxlength(200) 
+	title String required minlength(1) maxlength(200)
     year Integer min(1888) max(3000)
-    plot String maxlength(2000)
+    plot String maxlength(10000)
     imageUrl String maxlength(2000)
     elo Integer
 }
@@ -48,3 +48,4 @@ dto * with mapstruct
 
 // Set service options to all except few
 service * with serviceClass
+filter all

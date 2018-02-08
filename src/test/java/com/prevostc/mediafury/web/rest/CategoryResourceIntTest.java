@@ -3,11 +3,14 @@ package com.prevostc.mediafury.web.rest;
 import com.prevostc.mediafury.MediafuryApp;
 
 import com.prevostc.mediafury.domain.Category;
+import com.prevostc.mediafury.domain.Movie;
 import com.prevostc.mediafury.repository.CategoryRepository;
 import com.prevostc.mediafury.service.CategoryService;
 import com.prevostc.mediafury.service.dto.CategoryDTO;
 import com.prevostc.mediafury.service.mapper.CategoryMapper;
 import com.prevostc.mediafury.web.rest.errors.ExceptionTranslator;
+import com.prevostc.mediafury.service.dto.CategoryCriteria;
+import com.prevostc.mediafury.service.CategoryQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +57,9 @@ public class CategoryResourceIntTest {
     private CategoryService categoryService;
 
     @Autowired
+    private CategoryQueryService categoryQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +78,7 @@ public class CategoryResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CategoryResource categoryResource = new CategoryResource(categoryService);
+        final CategoryResource categoryResource = new CategoryResource(categoryService, categoryQueryService);
         this.restCategoryMockMvc = MockMvcBuilders.standaloneSetup(categoryResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -182,6 +188,86 @@ public class CategoryResourceIntTest {
             .andExpect(jsonPath("$.id").value(category.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name equals to DEFAULT_NAME
+        defaultCategoryShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the categoryList where name equals to UPDATED_NAME
+        defaultCategoryShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultCategoryShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the categoryList where name equals to UPDATED_NAME
+        defaultCategoryShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name is not null
+        defaultCategoryShouldBeFound("name.specified=true");
+
+        // Get all the categoryList where name is null
+        defaultCategoryShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllCategoriesByMovieIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Movie movie = MovieResourceIntTest.createEntity(em);
+        em.persist(movie);
+        em.flush();
+        category.addMovie(movie);
+        categoryRepository.saveAndFlush(category);
+        Long movieId = movie.getId();
+
+        // Get all the categoryList where movie equals to movieId
+        defaultCategoryShouldBeFound("movieId.equals=" + movieId);
+
+        // Get all the categoryList where movie equals to movieId + 1
+        defaultCategoryShouldNotBeFound("movieId.equals=" + (movieId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultCategoryShouldBeFound(String filter) throws Exception {
+        restCategoryMockMvc.perform(get("/api/categories?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultCategoryShouldNotBeFound(String filter) throws Exception {
+        restCategoryMockMvc.perform(get("/api/categories?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

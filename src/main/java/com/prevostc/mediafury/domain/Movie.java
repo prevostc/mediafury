@@ -39,7 +39,7 @@ public class Movie implements Serializable {
 
     @Size(max = 10000)
     @Lob
-    @Column(name = "plot", length = 2000)
+    @Column(name = "plot", length = 10000)
     private String plot;
 
     @Size(max = 2000)

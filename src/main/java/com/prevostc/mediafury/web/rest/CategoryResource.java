@@ -7,6 +7,8 @@ import com.prevostc.mediafury.web.rest.errors.BadRequestAlertException;
 import com.prevostc.mediafury.web.rest.util.HeaderUtil;
 import com.prevostc.mediafury.web.rest.util.PaginationUtil;
 import com.prevostc.mediafury.service.dto.CategoryDTO;
+import com.prevostc.mediafury.service.dto.CategoryCriteria;
+import com.prevostc.mediafury.service.CategoryQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +40,11 @@ public class CategoryResource {
 
     private final CategoryService categoryService;
 
-    public CategoryResource(CategoryService categoryService) {
+    private final CategoryQueryService categoryQueryService;
+
+    public CategoryResource(CategoryService categoryService, CategoryQueryService categoryQueryService) {
         this.categoryService = categoryService;
+        this.categoryQueryService = categoryQueryService;
     }
 
     /**
@@ -90,13 +95,14 @@ public class CategoryResource {
      * GET  /categories : get all the categories.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of categories in body
      */
     @GetMapping("/categories")
     @Timed
-    public ResponseEntity<List<CategoryDTO>> getAllCategories(Pageable pageable) {
-        log.debug("REST request to get a page of Categories");
-        Page<CategoryDTO> page = categoryService.findAll(pageable);
+    public ResponseEntity<List<CategoryDTO>> getAllCategories(CategoryCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Categories by criteria: {}", criteria);
+        Page<CategoryDTO> page = categoryQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/categories");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

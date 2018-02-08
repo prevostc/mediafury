@@ -48,7 +48,7 @@ public class CategoryService {
     public CategoryDTO importData(CategoryDTO personDTO) {
         return this.importUtil.importData(personDTO);
     }
-    
+
     /**
      * Save a category.
      *

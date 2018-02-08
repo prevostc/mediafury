@@ -3,11 +3,14 @@ package com.prevostc.mediafury.web.rest;
 import com.prevostc.mediafury.MediafuryApp;
 
 import com.prevostc.mediafury.domain.Person;
+import com.prevostc.mediafury.domain.MoviePerson;
 import com.prevostc.mediafury.repository.PersonRepository;
 import com.prevostc.mediafury.service.PersonService;
 import com.prevostc.mediafury.service.dto.PersonDTO;
 import com.prevostc.mediafury.service.mapper.PersonMapper;
 import com.prevostc.mediafury.web.rest.errors.ExceptionTranslator;
+import com.prevostc.mediafury.service.dto.PersonCriteria;
+import com.prevostc.mediafury.service.PersonQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +57,9 @@ public class PersonResourceIntTest {
     private PersonService personService;
 
     @Autowired
+    private PersonQueryService personQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +78,7 @@ public class PersonResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonResource personResource = new PersonResource(personService);
+        final PersonResource personResource = new PersonResource(personService, personQueryService);
         this.restPersonMockMvc = MockMvcBuilders.standaloneSetup(personResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -182,6 +188,86 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.id").value(person.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personRepository.saveAndFlush(person);
+
+        // Get all the personList where name equals to DEFAULT_NAME
+        defaultPersonShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the personList where name equals to UPDATED_NAME
+        defaultPersonShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        personRepository.saveAndFlush(person);
+
+        // Get all the personList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultPersonShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the personList where name equals to UPDATED_NAME
+        defaultPersonShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personRepository.saveAndFlush(person);
+
+        // Get all the personList where name is not null
+        defaultPersonShouldBeFound("name.specified=true");
+
+        // Get all the personList where name is null
+        defaultPersonShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByMoviePersonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        MoviePerson moviePerson = MoviePersonResourceIntTest.createEntity(em);
+        em.persist(moviePerson);
+        em.flush();
+        person.addMoviePerson(moviePerson);
+        personRepository.saveAndFlush(person);
+        Long moviePersonId = moviePerson.getId();
+
+        // Get all the personList where moviePerson equals to moviePersonId
+        defaultPersonShouldBeFound("moviePersonId.equals=" + moviePersonId);
+
+        // Get all the personList where moviePerson equals to moviePersonId + 1
+        defaultPersonShouldNotBeFound("moviePersonId.equals=" + (moviePersonId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPersonShouldBeFound(String filter) throws Exception {
+        restPersonMockMvc.perform(get("/api/people?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(person.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPersonShouldNotBeFound(String filter) throws Exception {
+        restPersonMockMvc.perform(get("/api/people?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

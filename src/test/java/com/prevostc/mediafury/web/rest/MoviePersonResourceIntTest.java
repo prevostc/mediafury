@@ -10,6 +10,8 @@ import com.prevostc.mediafury.service.MoviePersonService;
 import com.prevostc.mediafury.service.dto.MoviePersonDTO;
 import com.prevostc.mediafury.service.mapper.MoviePersonMapper;
 import com.prevostc.mediafury.web.rest.errors.ExceptionTranslator;
+import com.prevostc.mediafury.service.dto.MoviePersonCriteria;
+import com.prevostc.mediafury.service.MoviePersonQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,9 @@ public class MoviePersonResourceIntTest {
     private MoviePersonService moviePersonService;
 
     @Autowired
+    private MoviePersonQueryService moviePersonQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +80,7 @@ public class MoviePersonResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MoviePersonResource moviePersonResource = new MoviePersonResource(moviePersonService);
+        final MoviePersonResource moviePersonResource = new MoviePersonResource(moviePersonService, moviePersonQueryService);
         this.restMoviePersonMockMvc = MockMvcBuilders.standaloneSetup(moviePersonResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -195,6 +200,105 @@ public class MoviePersonResourceIntTest {
             .andExpect(jsonPath("$.id").value(moviePerson.getId().intValue()))
             .andExpect(jsonPath("$.role").value(DEFAULT_ROLE.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllMoviePeopleByRoleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        moviePersonRepository.saveAndFlush(moviePerson);
+
+        // Get all the moviePersonList where role equals to DEFAULT_ROLE
+        defaultMoviePersonShouldBeFound("role.equals=" + DEFAULT_ROLE);
+
+        // Get all the moviePersonList where role equals to UPDATED_ROLE
+        defaultMoviePersonShouldNotBeFound("role.equals=" + UPDATED_ROLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviePeopleByRoleIsInShouldWork() throws Exception {
+        // Initialize the database
+        moviePersonRepository.saveAndFlush(moviePerson);
+
+        // Get all the moviePersonList where role in DEFAULT_ROLE or UPDATED_ROLE
+        defaultMoviePersonShouldBeFound("role.in=" + DEFAULT_ROLE + "," + UPDATED_ROLE);
+
+        // Get all the moviePersonList where role equals to UPDATED_ROLE
+        defaultMoviePersonShouldNotBeFound("role.in=" + UPDATED_ROLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviePeopleByRoleIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        moviePersonRepository.saveAndFlush(moviePerson);
+
+        // Get all the moviePersonList where role is not null
+        defaultMoviePersonShouldBeFound("role.specified=true");
+
+        // Get all the moviePersonList where role is null
+        defaultMoviePersonShouldNotBeFound("role.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMoviePeopleByMovieIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Movie movie = MovieResourceIntTest.createEntity(em);
+        em.persist(movie);
+        em.flush();
+        moviePerson.setMovie(movie);
+        moviePersonRepository.saveAndFlush(moviePerson);
+        Long movieId = movie.getId();
+
+        // Get all the moviePersonList where movie equals to movieId
+        defaultMoviePersonShouldBeFound("movieId.equals=" + movieId);
+
+        // Get all the moviePersonList where movie equals to movieId + 1
+        defaultMoviePersonShouldNotBeFound("movieId.equals=" + (movieId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMoviePeopleByPersonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Person person = PersonResourceIntTest.createEntity(em);
+        em.persist(person);
+        em.flush();
+        moviePerson.setPerson(person);
+        moviePersonRepository.saveAndFlush(moviePerson);
+        Long personId = person.getId();
+
+        // Get all the moviePersonList where person equals to personId
+        defaultMoviePersonShouldBeFound("personId.equals=" + personId);
+
+        // Get all the moviePersonList where person equals to personId + 1
+        defaultMoviePersonShouldNotBeFound("personId.equals=" + (personId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultMoviePersonShouldBeFound(String filter) throws Exception {
+        restMoviePersonMockMvc.perform(get("/api/movie-people?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(moviePerson.getId().intValue())))
+            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultMoviePersonShouldNotBeFound(String filter) throws Exception {
+        restMoviePersonMockMvc.perform(get("/api/movie-people?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
 
     @Test
     @Transactional

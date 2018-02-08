@@ -14,6 +14,6 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MoviePersonRepository extends JpaRepository<MoviePerson, Long> {
+public interface MoviePersonRepository extends JpaRepository<MoviePerson, Long>, JpaSpecificationExecutor<MoviePerson> {
     Optional<MoviePerson> findOneByRoleAndMovieIdAndPersonId(PersonRole role, Long movieId, Long personId);
 }
