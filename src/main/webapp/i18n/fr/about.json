@@ -14,6 +14,8 @@
             "follow": "Suivez @java_hipster sur Twitter"
         },
         "like": "Si vous aimez JHipster, donnez nous une étoile sur",
-        "github": "GitHub "
+        "github": "GitHub ",
+        "omdb": "Toutes les données concernant les filmes proviennent d'OMDB. Merci de respecter leur license: ",
+        "mediafury_source": "Le code de mediafury est disponible ici"
     }
 }

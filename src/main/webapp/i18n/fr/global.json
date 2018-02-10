@@ -52,9 +52,9 @@
         "messages": {
             "info": {
                 "authenticated": {
-                    "prefix": "Si vous voulez vous ",
+                    "prefix": "Vous devez vous ",
                     "link": "connecter",
-                    "suffix": ", vous pouvez utiliser les comptes par défaut : <br/> - Administrateur (nom d'utilisateur=\"admin\" et mot de passe =\"admin\") <br/> - Utilisateur (nom d'utilisateur=\"user\" et mot de passe =\"user\")."
+                    "suffix": " pour accéder à Mediafury, vous pouvez utiliser les comptes par défaut : <br/> - Administrateur (nom d'utilisateur=\"admin\" et mot de passe =\"admin\") <br/> - Utilisateur (nom d'utilisateur=\"user\" et mot de passe =\"user\")."
                 },
                 "register": {
                     "noaccount": "Vous n'avez pas encore de compte ?",
