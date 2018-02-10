@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MovieService} from '../movie.service';
 import {Movie} from '../movie.model';
 import {HttpResponse} from '@angular/common/http';
@@ -10,15 +10,21 @@ import {HttpResponse} from '@angular/common/http';
         'movie-random.scss'
     ]
 })
-export class MovieRandomComponent implements OnInit {
+export class MovieRandomComponent implements OnInit, OnChanges {
 
-    movie: Movie;
+    @Input() @Output() movie;
     @Output() movieChange = new EventEmitter<Movie>();
     @Output() onClick = new EventEmitter<Movie>();
 
     constructor(
         private movieService: MovieService,
     ) {
+    }
+
+    ngOnChanges(change: SimpleChanges) {
+        if (! change.movie.firstChange && change.movie.currentValue === null) {
+            this.load();
+        }
     }
 
     ngOnInit() {
@@ -36,4 +42,5 @@ export class MovieRandomComponent implements OnInit {
     clicked() {
         this.onClick.emit(this.movie);
     }
+
 }

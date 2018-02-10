@@ -28,6 +28,7 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
@@ -40,6 +41,7 @@ import {
         MediafuryAdminModule,
         MediafuryAccountModule,
         MediafuryEntityModule,
+        BrowserAnimationsModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

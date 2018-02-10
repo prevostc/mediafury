@@ -1,12 +1,19 @@
-
-
-<div *ngIf="!fetching">
-    <div class="row">
-        <div class="col-md-3 offset-md-2 cursor-pointer">
-            <jhi-movie-random (movieChange)="leftMovie = $event" (onClick)="movieClicked($event)"></jhi-movie-random>
-        </div>
-        <div class="col-md-3 offset-md-2 cursor-pointer">
-            <jhi-movie-random (movieChange)="rightMovie = $event" (onClick)="movieClicked($event)"></jhi-movie-random>
-        </div>
+<div class="row fury-contest">
+    <div class="col-md-3 offset-md-2 cursor-pointer">
+        <jhi-movie-random
+            [@movieState]="leftMovieState"
+            [movie]="leftMovie"
+            (movieChange)="gotLeftMovie($event)"
+            (onClick)="movieClicked($event)">
+        </jhi-movie-random>
+    </div>
+    <div class="col-md-3 offset-md-2 cursor-pointer">
+        <jhi-movie-random
+            [@movieState]="rightMovieState"
+            (@movieState.done)="animDone($event)"
+            [movie]="rightMovie"
+            (movieChange)="gotRightMovie($event)"
+            (onClick)="movieClicked($event)">
+        </jhi-movie-random>
     </div>
 </div>
