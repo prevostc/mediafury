@@ -41,10 +41,11 @@ spring:
             hibernate.generate_statistics: false
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: ${MAILGUN_SMTP_SERVER}
+        port: ${MAILGUN_SMTP_PORT}
+        username: ${MAILGUN_SMTP_LOGIN}
+        password: ${MAILGUN_SMTP_PASSWORD}
+        protocol: smtp
     thymeleaf:
         cache: true
 
@@ -95,13 +96,13 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: 8ba03b7f5ce188f5ef890c6f213b109894ebb1eb
+                secret: ${JWT_SECRET}
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: mediafury@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        from: no-reply@mediafury.herokuapp.com
+        base-url: http://mediafury.herokuapp.com # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:

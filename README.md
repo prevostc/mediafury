@@ -6,15 +6,15 @@ This application was generated using JHipster 4.14.0, you can find documentation
 
 # todo
 
+* fix the categories bug (missing categories in prod)
 * Specific DTO for detail and list pages (too much info fetch in list page)
 * create an angular category-select component (for movie edit and list)
 * avoid leaking query abstraction for angular query services
 * fix spring unit test independence
+* material design ?
 * random movie loading animation
-* fix email bug
+* fix poster size on list and details pages
 * click on fury or home reloads fury
-* vote animations
-* smaller plot on fury page
 * admin vote changes ELO OR admin vote picks movies OR disable admin vote
 * Special Podium-Like ranking page (only sho the top 3)
 * disable multiple votes ? or limit votes in some way (by last vote date, vote count per day)
@@ -146,31 +146,6 @@ To achieve this, first build a docker image of your app by running:
 
 Then run:
 
-    docker-compose -f src/main/docker/app.yml up -d
+    docker-compose -f src/main/docker/app.yml up
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[JHipster Homepage and latest documentation]: http://www.jhipster.tech
-[JHipster 4.14.0 archive]: http://www.jhipster.tech/documentation-archive/v4.14.0
-
-[Using JHipster in development]: http://www.jhipster.tech/documentation-archive/v4.14.0/development/
-[Using Docker and Docker-Compose]: http://www.jhipster.tech/documentation-archive/v4.14.0/docker-compose
-[Using JHipster in production]: http://www.jhipster.tech/documentation-archive/v4.14.0/production/
-[Running tests page]: http://www.jhipster.tech/documentation-archive/v4.14.0/running-tests/
-[Setting up Continuous Integration]: http://www.jhipster.tech/documentation-archive/v4.14.0/setting-up-ci/
-
-
-[Node.js]: https://nodejs.org/
-[Yarn]: https://yarnpkg.org/
-[Webpack]: https://webpack.github.io/
-[Angular CLI]: https://cli.angular.io/
-[BrowserSync]: http://www.browsersync.io/
-[Karma]: http://karma-runner.github.io/
-[Jasmine]: http://jasmine.github.io/2.0/introduction.html
-[Protractor]: https://angular.github.io/protractor/
-[Leaflet]: http://leafletjs.com/
-[DefinitelyTyped]: http://definitelytyped.org/

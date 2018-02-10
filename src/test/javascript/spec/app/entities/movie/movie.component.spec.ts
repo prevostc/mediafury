@@ -6,6 +6,7 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { MediafuryTestModule } from '../../../test.module';
 import { MovieComponent } from '../../../../../../main/webapp/app/entities/movie/movie.component';
 import { MovieService } from '../../../../../../main/webapp/app/entities/movie/movie.service';
+import { CategoryService } from '../../../../../../main/webapp/app/entities/category/category.service';
 import { Movie } from '../../../../../../main/webapp/app/entities/movie/movie.model';
 
 describe('Component Tests', () => {
@@ -20,7 +21,8 @@ describe('Component Tests', () => {
                 imports: [MediafuryTestModule],
                 declarations: [MovieComponent],
                 providers: [
-                    MovieService
+                    MovieService,
+                    CategoryService,
                 ]
             })
             .overrideTemplate(MovieComponent, '')

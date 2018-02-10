@@ -21,23 +21,24 @@ enum FuryMovieState {
         'fury-contest.scss'
     ],
     animations: [
+        // @todo: when in production, we cannot use the enum values
         trigger('movieState', [
-            state(FuryMovieState.DISPLAYED, style({
+            state('displayed', style({
                 transform: 'scale(1)',
             })),
-            state(FuryMovieState.WON, style({
+            state('won', style({
                 opacity: 1,
                 transform: 'scale(1.2)',
             })),
-            state(FuryMovieState.LOST, style({
+            state('lost', style({
                 opacity: 0.3,
                 transform: 'scale(0.4)',
             })),
 
-            transition(`* => ${FuryMovieState.DISPLAYED}`, animate('100ms ease-in')),
-            transition(`* => ${FuryMovieState.LOST}`, animate('200ms ease-out')),
-            transition(`* => ${FuryMovieState.WON}`, animate('200ms ease-out')),
-            transition(`* => ${FuryMovieState.FETCHING}`, animate('200ms ease-out')),
+            transition('* => displayed', animate('100ms ease-in')),
+            transition('* => lost', animate('200ms ease-out')),
+            transition('* => won', animate('200ms ease-out')),
+            transition('* => fetching', animate('200ms ease-out')),
         ]),
     ]
 })
@@ -45,8 +46,8 @@ export class FuryContestComponent implements OnInit {
 
     leftMovie: Movie;
     rightMovie: Movie;
-    leftMovieState: FuryMovieState;
-    rightMovieState: FuryMovieState;
+    leftMovieState: FuryMovieState = FuryMovieState.FETCHING;
+    rightMovieState: FuryMovieState = FuryMovieState.FETCHING;
 
     movieClicked$ = new EventEmitter<Vote>();
     animation$ = new EventEmitter<void>();
@@ -55,9 +56,6 @@ export class FuryContestComponent implements OnInit {
         private voteService: VoteService,
         private jhiAlertService: JhiAlertService,
     ) {
-        this.rightMovieState = FuryMovieState.FETCHING;
-        this.leftMovieState = FuryMovieState.FETCHING;
-
         // when both animation is ended and vote object has been built
         // then call the vote service
         zip(this.movieClicked$, this.animation$)
