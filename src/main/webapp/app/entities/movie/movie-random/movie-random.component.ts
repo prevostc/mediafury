@@ -4,9 +4,11 @@ import {Movie} from '../movie.model';
 import {HttpResponse} from '@angular/common/http';
 
 @Component({
-  selector: 'jhi-movie-random',
-  templateUrl: './movie-random.component.html',
-  styles: []
+    selector: 'jhi-movie-random',
+    templateUrl: './movie-random.component.html',
+    styleUrls: [
+        'movie-random.scss'
+    ]
 })
 export class MovieRandomComponent implements OnInit {
 

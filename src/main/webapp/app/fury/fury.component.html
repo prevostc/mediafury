@@ -1,8 +1,10 @@
 <div [ngSwitch]="isAuthenticated()">
     <div class="row" *ngSwitchCase="true">
         <h1 class="col-md-12 text-center display-4" jhiTranslate="fury.title">Fury Time!</h1>
-        <h2 class="col-md-12 text-center lead" jhiTranslate="fury.subtitle">Click on the one you like the most</h2>
         <jhi-fury-contest></jhi-fury-contest>
+        <br />
+        <br />
+        <h2 class="col-md-12 text-center lead" jhiTranslate="fury.subtitle">Click on the one you like the most</h2>
     </div>
     <div class="row alert alert-warning" *ngSwitchCase="false">
         <span jhiTranslate="global.messages.info.authenticated.prefix">You need to </span>&nbsp;

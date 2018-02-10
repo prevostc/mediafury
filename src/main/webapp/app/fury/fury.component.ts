@@ -7,6 +7,9 @@ import { Account, LoginModalService, Principal } from '../shared';
 @Component({
     selector: 'jhi-fury',
     templateUrl: './fury.component.html',
+    styleUrls: [
+        'fury.scss'
+    ]
 })
 export class FuryComponent implements OnInit {
     account: Account;

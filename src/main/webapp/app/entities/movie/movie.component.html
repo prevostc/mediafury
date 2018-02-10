@@ -46,7 +46,7 @@
                 <td><a [routerLink]="['../movie', movie.id ]">{{movie.id}}</a></td>
                 <td>{{movie.title}}</td>
                 <td>{{movie.year}}</td>
-                <td>{{movie.plot.substr(0, 50)}}...</td>
+                <td>{{(movie.plot || '').substr(0, 50)}}...</td>
                 <td><jhi-movie-poster height="100" [movie]="movie"></jhi-movie-poster></td>
                 <td>{{movie.elo}}</td>
                 <td class="text-right">

@@ -1,8 +1,10 @@
 <div *ngIf="movie">
     <jhi-alert-error></jhi-alert-error>
-    <div class="row" (click)="clicked()">
-        <div class="col-md-12 text-center"><h3>{{movie.title}} - {{movie.year}}</h3></div>
-        <div class="col-md-12 text-center"><jhi-movie-poster [movie]="movie"></jhi-movie-poster></div>
-        <blockquote class="col-md-12 text-center">{{movie.plot}}</blockquote>
+    <div (click)="clicked()" class="card">
+        <jhi-movie-poster class="card-img-top" [movie]="movie"></jhi-movie-poster>
+        <div class="card-body">
+            <h3 class="card-title">{{movie.title}} - {{movie.year}}</h3>
+            <p class="card-text">{{(movie.plot || '').substr(0, 50)}}...</p>
+        </div>
     </div>
 </div>

@@ -8,7 +8,9 @@ import {Movie} from '../movie.model';
 })
 export class MoviePosterComponent {
     @Input() movie: Movie;
+    @Input() class: string;
     @Input() height = 300;
+    @Input() width = 300;
 
     getImageUrl(): string {
         return this.movie.imageUrl ? this.movie.imageUrl : 'http://via.placeholder.com/300x445?text=N/A';
