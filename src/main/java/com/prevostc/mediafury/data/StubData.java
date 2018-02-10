@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.prevostc.mediafury.domain.Movie;
 import com.prevostc.mediafury.domain.enumeration.PersonRole;
 import com.prevostc.mediafury.service.CategoryService;
 import com.prevostc.mediafury.service.MoviePersonService;
@@ -70,18 +71,19 @@ public class StubData implements CommandLineRunner {
                 continue;
             }
             try {
-                // import movie to get ID
-                MovieDTO movieDTO = movieService.importData(stubMovieDTO.getMovieDTO());
-
                 // import all categories to get the ID
                 Set<CategoryDTO> categoryDTOs = stubMovieDTO.getCategoryDTOs().stream()
                     .map(categoryService::importData)
                     .collect(Collectors.toSet());
+
+                // import movie to get ID
+                MovieDTO movieDTO = stubMovieDTO.getMovieDTO();
                 movieDTO.setCategories(categoryDTOs);
+                MovieDTO importedMovieDTO = movieService.importData(movieDTO);
 
                 // import all persons
                 Set<MoviePersonDTO> moviePersonDTOs = stubMovieDTO.getStubMoviePersonDTOS().stream()
-                    .map(stubMoviePersonDTO -> new MoviePersonDTO(movieDTO, personService.importData(stubMoviePersonDTO.getPersonDTO()), stubMoviePersonDTO.getRole()))
+                    .map(stubMoviePersonDTO -> new MoviePersonDTO(importedMovieDTO, personService.importData(stubMoviePersonDTO.getPersonDTO()), stubMoviePersonDTO.getRole()))
                     .map(moviePersonService::importData)
                     .collect(Collectors.toSet());
             } catch (Exception e) {
@@ -203,6 +205,10 @@ public class StubData implements CommandLineRunner {
 
         Set<CategoryDTO> getCategoryDTOs() {
             return categoryDTOs;
+        }
+
+        public void setCategoryDTOs(Set<CategoryDTO> categoryDTOs) {
+            this.categoryDTOs = categoryDTOs;
         }
     }
 

@@ -28,6 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.prevostc.mediafury.web.rest.TestUtil.createFormattingConversionService;
@@ -59,6 +61,8 @@ public class MovieResourceIntTest {
 
     private static final Integer DEFAULT_ELO = 1;
     private static final Integer UPDATED_ELO = 2;
+
+    private static final String DEFAULT_CATEGORY_NAME = "Category1";
 
     @Autowired
     private MovieRepository movieRepository;
@@ -112,6 +116,8 @@ public class MovieResourceIntTest {
             .plot(DEFAULT_PLOT)
             .imageUrl(DEFAULT_IMAGE_URL)
             .elo(DEFAULT_ELO);
+
+        movie.setCategories(new HashSet<>(Arrays.asList(new Category(DEFAULT_CATEGORY_NAME))));
         return movie;
     }
 
@@ -215,7 +221,10 @@ public class MovieResourceIntTest {
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.plot").value(DEFAULT_PLOT.toString()))
             .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL.toString()))
-            .andExpect(jsonPath("$.elo").value(DEFAULT_ELO));
+            .andExpect(jsonPath("$.elo").value(DEFAULT_ELO))
+            .andExpect(jsonPath("$.categories").isArray())
+            .andExpect(jsonPath("$.categories").value("{}"))
+        ;
     }
 
     @Test
@@ -228,7 +237,9 @@ public class MovieResourceIntTest {
         restMovieMockMvc.perform(get("/api/movies/random"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").isNotEmpty());
+            .andExpect(jsonPath("$.id").isNotEmpty())
+            .andExpect(header().string("Cache-Control", "no-cache"))
+        ;
     }
 
     @Test

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -117,7 +118,11 @@ public class MovieResource {
     public ResponseEntity<MovieDTO> getRandom() {
         log.debug("REST request to get random Movie : {}");
         MovieDTO movieDTO = movieService.findOneRandomWithImage();
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(movieDTO));
+
+        return Optional.ofNullable(movieDTO)
+            .map(dto -> ResponseEntity.ok().cacheControl(CacheControl.noCache()).body(dto))
+            .orElseGet(() -> ResponseEntity.noContent().build())
+        ;
     }
 
 
