@@ -12,9 +12,7 @@ This application was generated using JHipster 4.14.0, you can find documentation
 * fix spring unit test independence
 * random movie loading animation
 * fix email bug
-* proper title on detail pages
 * click on fury or home reloads fury
-* footer + header
 * vote animations
 * smaller plot on fury page
 * admin vote changes ELO OR admin vote picks movies OR disable admin vote

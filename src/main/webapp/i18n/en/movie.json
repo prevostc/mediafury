@@ -18,11 +18,11 @@
             },
             "title": "Title",
             "year": "Year",
-            "plot": "Plot",
+            "plot": "Synopsis",
             "imageUrl": "Image Url",
             "image": "Image",
             "elo": "Elo",
-            "moviePerson": "Movie Person",
+            "moviePerson": "Contributor",
             "category": "Category"
         }
     }

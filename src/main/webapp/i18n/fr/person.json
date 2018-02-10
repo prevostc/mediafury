@@ -3,21 +3,21 @@
     "mediafuryApp": {
         "person" : {
             "home": {
-                "title": "People",
-                "createLabel": "Créer un nouveau Person",
-                "createOrEditLabel": "Créer ou éditer un Person"
+                "title": "Personnes",
+                "createLabel": "Créer une nouvelle Personne",
+                "createOrEditLabel": "Créer ou éditer une Personne"
             },
-            "created": "Un nouveau Person a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Person avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Person avec l'identifiant {{ param }} a été supprimé",
+            "created": "Une nouvelle Personne a été créé avec l'identifiant {{ param }}",
+            "updated": "La Personne avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "La Personne avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Person {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la Personne {{ id }} ?"
             },
             "detail": {
-                "title": "Person"
+                "title": "Personne"
             },
-            "name": "Name",
-            "moviePerson": "Movie Person"
+            "name": "Nom",
+            "moviePerson": "Participant"
         }
     }
 }

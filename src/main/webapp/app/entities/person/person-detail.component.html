@@ -8,7 +8,7 @@
         <dd>
             <ul *ngFor="let moviePerson of person.moviePeople">
                 <li>
-                    <a [routerLink]="['/movie', moviePerson?.movieId ]">{{moviePerson.role}} - {{moviePerson.movieTitle}}</a>
+                    <a [routerLink]="['/movie', moviePerson?.movieId ]"><span jhiTranslate="mediafuryApp.PersonRole.{{moviePerson.role}}">{{moviePerson.role}}</span> - {{moviePerson.movieTitle}}</a>
                 </li>
             </ul>
         </dd>

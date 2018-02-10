@@ -3,18 +3,18 @@
     "mediafuryApp": {
         "moviePerson" : {
             "home": {
-                "title": "Movie People",
-                "createLabel": "Create a new Movie Person",
-                "createOrEditLabel": "Create or edit a Movie Person"
+                "title": "Contributors",
+                "createLabel": "Create a new Contributor",
+                "createOrEditLabel": "Create or edit a Contributor"
             },
-            "created": "A new Movie Person is created with identifier {{ param }}",
-            "updated": "A Movie Person is updated with identifier {{ param }}",
-            "deleted": "A Movie Person is deleted with identifier {{ param }}",
+            "created": "A new Contributor is created with identifier {{ param }}",
+            "updated": "A Contributor is updated with identifier {{ param }}",
+            "deleted": "A Contributor is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Movie Person {{ id }}?"
+                "question": "Are you sure you want to delete Contributor {{ id }}?"
             },
             "detail": {
-                "title": "Movie Person"
+                "title": "Contributor"
             },
             "role": "Role",
             "movie": "Movie",

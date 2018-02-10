@@ -3,21 +3,21 @@
     "mediafuryApp": {
         "category" : {
             "home": {
-                "title": "Categories",
-                "createLabel": "Créer un nouveau Category",
-                "createOrEditLabel": "Créer ou éditer un Category"
+                "title": "Catégories",
+                "createLabel": "Créer une nouvelle catégorie",
+                "createOrEditLabel": "Créer ou éditer une catégorie"
             },
-            "created": "Un nouveau Category a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Category avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Category avec l'identifiant {{ param }} a été supprimé",
+            "created": "Une nouvelle catégorie a été créé avec l'identifiant {{ param }}",
+            "updated": "La catégorie avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "La catégorie avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Category {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la catégorie {{ id }} ?"
             },
             "detail": {
-                "title": "Category"
+                "title": "Catégorie"
             },
-            "name": "Name",
-            "movie": "Movie"
+            "name": "Nom",
+            "movie": "Film"
         }
     }
 }

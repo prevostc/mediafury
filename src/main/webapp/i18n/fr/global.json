@@ -8,10 +8,10 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
-                "movie": "Movie",
-                "category": "Category",
-                "person": "Person",
-                "moviePerson": "Movie Person",
+                "movie": "Film",
+                "category": "Catégorie",
+                "person": "Personne",
+                "moviePerson": "Participant",
                 "vote": "Vote",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },

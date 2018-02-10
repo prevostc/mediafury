@@ -16,10 +16,10 @@
             "detail": {
                 "title": "Vote"
             },
-            "winnerEloDiff": "Winner Elo Diff",
-            "loserEloDiff": "Loser Elo Diff",
-            "winner": "Winner",
-            "loser": "Loser",
+            "winnerEloDiff": "Gagnant ELO Diff",
+            "loserEloDiff": "Perdantt ELO Diff",
+            "winner": "Gagnant",
+            "loser": "Perdant",
             "createdBy": "Créé par",
             "createdDate": "Créé le"
         }

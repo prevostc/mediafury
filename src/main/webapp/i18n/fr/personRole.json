@@ -2,9 +2,9 @@
     "mediafuryApp": {
         "PersonRole" : {
             "null": "",
-            "WRITER": "WRITER",
-            "ACTOR": "ACTOR",
-            "DIRECTOR": "DIRECTOR"
+            "WRITER": "Scénariste",
+            "ACTOR": "Acteur",
+            "DIRECTOR": "Directeur"
         }
     }
 }

@@ -1,7 +1,7 @@
 {
     "about": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "Welcome to Media Fury",
+        "subtitle": "This is a pet project to test angular 5+ and spring through jhipster generators. The theme of this project is based on the awesome short film named Kung Fury: ",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },

@@ -3,26 +3,26 @@
     "mediafuryApp": {
         "movie" : {
             "home": {
-                "title": "Movies",
-                "createLabel": "Créer un nouveau Movie",
-                "createOrEditLabel": "Créer ou éditer un Movie"
+                "title": "Films",
+                "createLabel": "Créer un nouveau Film",
+                "createOrEditLabel": "Créer ou éditer un Film"
             },
-            "created": "Un nouveau Movie a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Movie avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Movie avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Film a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Film avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Film avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Movie {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Film {{ id }} ?"
             },
             "detail": {
-                "title": "Movie"
+                "title": "Film"
             },
-            "title": "Title",
-            "year": "Year",
+            "title": "Titre",
+            "year": "Année",
             "plot": "Plot",
-            "imageUrl": "Image Url",
+            "imageUrl": "Adresse de l'image",
             "image": "Image",
-            "elo": "Elo",
-            "moviePerson": "Movie Person",
+            "elo": "ELO",
+            "moviePerson": "Participant",
             "category": "Catégorie"
         }
     }

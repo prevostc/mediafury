@@ -1,7 +1,7 @@
 {
     "about": {
-        "title": "Bienvenue, Java Hipster !",
-        "subtitle": "Ceci est votre page d'accueil",
+        "title": "Bienvenue sur Media Fury",
+        "subtitle": "Cette appli est un projet pilote pour tester angular 5+ et spring via les générateurs jhipster. Le thème du projet est basé sur le génial court métrage nommé Kung Fury",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },

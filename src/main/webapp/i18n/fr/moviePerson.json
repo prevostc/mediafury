@@ -3,22 +3,22 @@
     "mediafuryApp": {
         "moviePerson" : {
             "home": {
-                "title": "MoviePeople",
-                "createLabel": "Créer un nouveau Movie Person",
-                "createOrEditLabel": "Créer ou éditer un Movie Person"
+                "title": "Participant",
+                "createLabel": "Créer un nouveau Participant",
+                "createOrEditLabel": "Créer ou éditer un Participant"
             },
-            "created": "Un nouveau Movie Person a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Movie Person avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Movie Person avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Participant a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Participant avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Participant avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Movie Person {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Participant {{ id }} ?"
             },
             "detail": {
-                "title": "Movie Person"
+                "title": "Participant"
             },
             "role": "Role",
-            "movie": "Movie",
-            "person": "Person"
+            "movie": "Film",
+            "person": "Personne"
         }
     }
 }
