@@ -1,13 +1,9 @@
 
 <div *ngIf="movie">
-    <h2><span jhiTranslate="mediafuryApp.movie.detail.title">Movie</span> {{movie.id}}</h2>
+    <h2>{{movie.title}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="mediafuryApp.movie.title">Title</span></dt>
-        <dd>
-            <span>{{movie.title}}</span>
-        </dd>
         <dt><span jhiTranslate="mediafuryApp.movie.year">Year</span></dt>
         <dd>
             <span>{{movie.year}}</span>

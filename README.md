@@ -7,7 +7,6 @@ This application was generated using JHipster 4.14.0, you can find documentation
 # todo
 
 * display movie grid by category OR add filter on existing grids  
-* display movie grid by person OR add filter on existing grids  
 * list searches ?
 * random movie loading animation
 * fix email bug

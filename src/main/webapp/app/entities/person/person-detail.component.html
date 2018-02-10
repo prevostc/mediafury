@@ -1,12 +1,16 @@
 
 <div *ngIf="person">
-    <h2><span jhiTranslate="mediafuryApp.person.detail.title">Person</span> {{person.id}}</h2>
+    <h2>{{person.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="mediafuryApp.person.name">Name</span></dt>
+        <dt><span jhiTranslate="mediafuryApp.person.moviePerson">Movies</span></dt>
         <dd>
-            <span>{{person.name}}</span>
+            <ul *ngFor="let moviePerson of person.moviePeople">
+                <li>
+                    <a [routerLink]="['/movie', moviePerson?.movieId ]">{{moviePerson.role}} - {{moviePerson.movieTitle}}</a>
+                </li>
+            </ul>
         </dd>
     </dl>
 

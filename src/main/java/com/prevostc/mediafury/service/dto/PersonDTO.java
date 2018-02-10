@@ -22,6 +22,8 @@ public class PersonDTO implements Serializable {
 
     private PersonRole personRole;
 
+    private Set<MoviePersonDTO> moviePeople;
+
     public PersonDTO() {
 
     }
@@ -52,6 +54,14 @@ public class PersonDTO implements Serializable {
 
     public void setPersonRole(PersonRole personRole) {
         this.personRole = personRole;
+    }
+
+    public Set<MoviePersonDTO> getMoviePeople() {
+        return moviePeople;
+    }
+
+    public void setMoviePeople(Set<MoviePersonDTO> moviePeople) {
+        this.moviePeople = moviePeople;
     }
 
     @Override
