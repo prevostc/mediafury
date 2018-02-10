@@ -17,6 +17,7 @@ import {
     MovieResolvePagingParams,
 } from './';
 import { MoviePosterComponent } from './movie-poster/movie-poster.component';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 const ENTITY_STATES = [
     ...movieRoute,
@@ -26,6 +27,7 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         MediafurySharedModule,
+        NgSelectModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [

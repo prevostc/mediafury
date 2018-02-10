@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span jhiTranslate="mediafuryApp.moviePerson.home.title">Movie People</span>
-        <button class="btn btn-primary float-right jh-create-entity create-movie-person" [routerLink]="['/', { outlets: { popup: ['movie-person-new'] } }]">
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn btn-primary float-right jh-create-entity create-movie-person" [routerLink]="['/', { outlets: { popup: ['movie-person-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="mediafuryApp.moviePerson.home.createLabel">
             Create new Movie Person

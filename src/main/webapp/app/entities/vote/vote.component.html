@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span jhiTranslate="mediafuryApp.vote.home.title">Votes</span>
-        <button class="btn btn-primary float-right jh-create-entity create-vote" [routerLink]="['/', { outlets: { popup: ['vote-new'] } }]">
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn btn-primary float-right jh-create-entity create-vote" [routerLink]="['/', { outlets: { popup: ['vote-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="mediafuryApp.vote.home.createLabel">
             Create new Vote

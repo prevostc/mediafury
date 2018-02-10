@@ -1,7 +1,7 @@
 <div>
-    <h2 *jhiHasAnyAuthority="'ROLE_ADMIN'">
+    <h2>
         <span jhiTranslate="mediafuryApp.category.home.title">Categories</span>
-        <button class="btn btn-primary float-right jh-create-entity create-category" [routerLink]="['/', { outlets: { popup: ['category-new'] } }]">
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn btn-primary float-right jh-create-entity create-category" [routerLink]="['/', { outlets: { popup: ['category-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="mediafuryApp.category.home.createLabel">
             Create new Category

@@ -1,7 +1,7 @@
 <div>
-    <h2 *jhiHasAnyAuthority="'ROLE_ADMIN'">
+    <h2>
         <span jhiTranslate="mediafuryApp.movie.home.title">Movies</span>
-        <button class="btn btn-primary float-right jh-create-entity create-movie" [routerLink]="['/', { outlets: { popup: ['movie-new'] } }]">
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn btn-primary float-right jh-create-entity create-movie" [routerLink]="['/', { outlets: { popup: ['movie-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="mediafuryApp.movie.home.createLabel">
             Create new Movie
@@ -10,6 +10,22 @@
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
+        <div class="col-md-4"></div>
+        <form class="col-md-3 form-inline">
+            <div class="form-group">
+                <label for="category_select"><span jhiTranslate="mediafuryApp.movie.category">Category</span></label>
+                <ng-select
+                    id="category_select"
+                    name="category_select"
+                    placeholder="Category"
+                    [items]="categories"
+                    bindLabel="name"
+                    bindValue="id"
+                    (change)="onCategoryChange($event)"
+                >
+                </ng-select>
+            </div>
+        </form>
     </div>
     <br/>
     <div class="table-responsive" *ngIf="movies">
@@ -30,7 +46,7 @@
                 <td><a [routerLink]="['../movie', movie.id ]">{{movie.id}}</a></td>
                 <td>{{movie.title}}</td>
                 <td>{{movie.year}}</td>
-                <td>{{movie.plot}}</td>
+                <td>{{movie.plot.substr(0, 50)}}...</td>
                 <td><jhi-movie-poster height="100" [movie]="movie"></jhi-movie-poster></td>
                 <td>{{movie.elo}}</td>
                 <td class="text-right">

@@ -6,8 +6,10 @@ This application was generated using JHipster 4.14.0, you can find documentation
 
 # todo
 
-* display movie grid by category OR add filter on existing grids  
-* list searches ?
+* Specific DTO for detail and list pages (too much info fetch in list page)
+* create an angular category-select component (for movie edit and list)
+* avoid leaking query abstraction for angular query services
+* fix spring unit test independence
 * random movie loading animation
 * fix email bug
 * proper title on detail pages

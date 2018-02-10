@@ -7,6 +7,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { Movie } from './movie.model';
 import { MovieService } from './movie.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import {Category, CategoryService} from '../category';
 
 @Component({
     selector: 'jhi-movie',
@@ -28,6 +29,8 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    categories: Category[] = [];
+    selectedCategory: Category;
 
     constructor(
         private movieService: MovieService,
@@ -36,7 +39,8 @@ currentAccount: any;
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private categoryService: CategoryService,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -48,10 +52,19 @@ currentAccount: any;
     }
 
     loadAll() {
-        this.movieService.query({
+        this.movies = [];
+        const params = {
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()
+        };
+
+        // @todo: avoid this leaking abstraction
+        if (this.selectedCategory) {
+            params['categoryId.equals'] = this.selectedCategory.id;
+        }
+
+        this.movieService.query(params).subscribe(
                 (res: HttpResponse<Movie[]>) => this.onSuccess(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -87,6 +100,12 @@ currentAccount: any;
             this.currentAccount = account;
         });
         this.registerChangeInMovies();
+
+        this.categoryService.query()
+            .subscribe(
+                (res: HttpResponse<Category[]>) => { this.categories = res.body; },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     ngOnDestroy() {
@@ -106,6 +125,11 @@ currentAccount: any;
             result.push('id');
         }
         return result;
+    }
+
+    onCategoryChange(category: Category) {
+        this.selectedCategory = category;
+        this.loadAll();
     }
 
     private onSuccess(data, headers) {
