@@ -1,6 +1,8 @@
 package com.prevostc.mediafury.service.dto;
 
 
+import com.prevostc.mediafury.domain.enumeration.PersonRole;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -17,6 +19,8 @@ public class PersonDTO implements Serializable {
     @NotNull
     @Size(min = 1, max = 200)
     private String name;
+
+    private PersonRole personRole;
 
     public PersonDTO() {
 
@@ -40,6 +44,14 @@ public class PersonDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public PersonRole getPersonRole() {
+        return personRole;
+    }
+
+    public void setPersonRole(PersonRole personRole) {
+        this.personRole = personRole;
     }
 
     @Override

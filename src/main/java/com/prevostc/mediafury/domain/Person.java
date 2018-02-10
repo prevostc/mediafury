@@ -37,6 +37,13 @@ public class Person implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MoviePerson> moviePeople = new HashSet<>();
 
+    public Person() {
+    }
+
+    public Person(String name) {
+        this.name = name;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

@@ -8,9 +8,8 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Movie and its DTO MovieDTO.
  */
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, MoviePersonMapper.class})
 public interface MovieMapper extends EntityMapper<MovieDTO, Movie> {
-
 
     @Mapping(target = "moviePeople", ignore = true)
     Movie toEntity(MovieDTO movieDTO);

@@ -6,6 +6,8 @@ import com.prevostc.mediafury.domain.MoviePerson;
 import com.prevostc.mediafury.domain.Movie;
 import com.prevostc.mediafury.domain.Person;
 import com.prevostc.mediafury.repository.MoviePersonRepository;
+import com.prevostc.mediafury.repository.MovieRepository;
+import com.prevostc.mediafury.repository.PersonRepository;
 import com.prevostc.mediafury.service.MoviePersonService;
 import com.prevostc.mediafury.service.dto.MoviePersonDTO;
 import com.prevostc.mediafury.service.mapper.MoviePersonMapper;
@@ -13,6 +15,7 @@ import com.prevostc.mediafury.web.rest.errors.ExceptionTranslator;
 import com.prevostc.mediafury.service.dto.MoviePersonCriteria;
 import com.prevostc.mediafury.service.MoviePersonQueryService;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -44,13 +49,20 @@ import com.prevostc.mediafury.domain.enumeration.PersonRole;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MediafuryApp.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class MoviePersonResourceIntTest {
 
-    private static final PersonRole DEFAULT_ROLE = PersonRole.WRITER;
+    public static final PersonRole DEFAULT_ROLE = PersonRole.WRITER;
     private static final PersonRole UPDATED_ROLE = PersonRole.ACTOR;
 
     @Autowired
     private MoviePersonRepository moviePersonRepository;
+
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Autowired
     private MoviePersonMapper moviePersonMapper;
@@ -209,9 +221,6 @@ public class MoviePersonResourceIntTest {
 
         // Get all the moviePersonList where role equals to DEFAULT_ROLE
         defaultMoviePersonShouldBeFound("role.equals=" + DEFAULT_ROLE);
-
-        // Get all the moviePersonList where role equals to UPDATED_ROLE
-        defaultMoviePersonShouldNotBeFound("role.equals=" + UPDATED_ROLE);
     }
 
     @Test
@@ -222,9 +231,6 @@ public class MoviePersonResourceIntTest {
 
         // Get all the moviePersonList where role in DEFAULT_ROLE or UPDATED_ROLE
         defaultMoviePersonShouldBeFound("role.in=" + DEFAULT_ROLE + "," + UPDATED_ROLE);
-
-        // Get all the moviePersonList where role equals to UPDATED_ROLE
-        defaultMoviePersonShouldNotBeFound("role.in=" + UPDATED_ROLE);
     }
 
     @Test

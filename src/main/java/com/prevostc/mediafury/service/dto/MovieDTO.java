@@ -32,6 +32,8 @@ public class MovieDTO implements Serializable {
 
     private Set<CategoryDTO> categories = new HashSet<>();
 
+    private Set<MoviePersonDTO> moviePeople = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -86,6 +88,14 @@ public class MovieDTO implements Serializable {
 
     public void setCategories(Set<CategoryDTO> categories) {
         this.categories = categories;
+    }
+
+    public Set<MoviePersonDTO> getMoviePeople() {
+        return moviePeople;
+    }
+
+    public void setMoviePeople(Set<MoviePersonDTO> moviePeople) {
+        this.moviePeople = moviePeople;
     }
 
     @Override

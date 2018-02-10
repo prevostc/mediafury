@@ -39,6 +39,15 @@ public class MoviePerson implements Serializable {
     @NotNull
     private Person person;
 
+    public MoviePerson() {
+    }
+
+    public MoviePerson(PersonRole role, Movie movie, Person person) {
+        this.role = role;
+        this.movie = movie;
+        this.person = person;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

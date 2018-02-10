@@ -21,6 +21,7 @@ import com.prevostc.mediafury.service.dto.PersonDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -81,7 +82,7 @@ public class StubData implements CommandLineRunner {
                 movieDTO.setCategories(categoryDTOs);
                 MovieDTO importedMovieDTO = movieService.importData(movieDTO);
 
-                // import all persons
+                // import all people
                 Set<MoviePersonDTO> moviePersonDTOs = stubMovieDTO.getStubMoviePersonDTOS().stream()
                     .map(stubMoviePersonDTO -> new MoviePersonDTO(importedMovieDTO, personService.importData(stubMoviePersonDTO.getPersonDTO()), stubMoviePersonDTO.getRole()))
                     .map(moviePersonService::importData)
@@ -132,7 +133,7 @@ public class StubData implements CommandLineRunner {
                     .collect(Collectors.toSet())
                 ;
 
-                // fetch persons in custom DTO object
+                // fetch people in custom DTO object
                 Set<StubMoviePersonDTO> stubMoviePersonDTOS = Stream.concat(
                     Stream.concat(
                         parsePersonField(node,"Director", PersonRole.DIRECTOR),
@@ -158,15 +159,15 @@ public class StubData implements CommandLineRunner {
          * Extract person info from text field
          * @param node Json node containing the field
          * @param field Field name to parse
-         * @param role Role to attribute for these persons
+         * @param role Role to attribute for these people
          * @return A DTO stream
          */
         private Stream<StubMoviePersonDTO> parsePersonField(JsonNode node, String field, PersonRole role) {
-            String persons = node.get(field).asText();
-            if (persons.equals(CustomMovieDeserializer.NOT_APPLICABLE)) {
+            String people = node.get(field).asText();
+            if (people.equals(CustomMovieDeserializer.NOT_APPLICABLE)) {
                 return Stream.empty();
             }
-            return Stream.of(persons.split(CustomMovieDeserializer.PERSON_SPLIT_PATTERN))
+            return Stream.of(people.split(CustomMovieDeserializer.PERSON_SPLIT_PATTERN))
                 .map(PersonDTO::new)
                 .map(personDTO -> new StubMoviePersonDTO(role, personDTO));
         }

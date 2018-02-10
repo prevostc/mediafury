@@ -26,15 +26,19 @@
         </dd>
         <dt><span jhiTranslate="mediafuryApp.movie.category">Category</span></dt>
         <dd>
-            <span *ngFor="let category of movie.categories; let last = last">
-                <a [routerLink]="['/category', category?.id ]">{{category.name}}</a>{{last ? '' : ', '}}
-            </span>
+            <ul *ngFor="let category of movie.categories">
+                <li>
+                    <a [routerLink]="['/category', category?.id ]">{{category.name}}</a>
+                </li>
+            </ul>
         </dd>
         <dt><span jhiTranslate="mediafuryApp.movie.moviePerson">Person</span></dt>
         <dd>
-            <span *ngFor="let person of movie.persons; let last = last">
-                <a [routerLink]="['/person', category?.id ]">{{person.name}}</a>{{last ? '' : ', '}}
-            </span>
+            <ul *ngFor="let moviePerson of movie.moviePeople">
+                <li>
+                    <a [routerLink]="['/person', moviePerson?.personId ]">{{moviePerson.role}} - {{moviePerson.personName}}</a>
+                </li>
+            </ul>
         </dd>
     </dl>
 
