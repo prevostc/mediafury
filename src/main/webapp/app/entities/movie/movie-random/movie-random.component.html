@@ -1,7 +1,7 @@
 <div *ngIf="movie">
     <jhi-alert-error></jhi-alert-error>
     <div (click)="clicked()" class="card">
-        <jhi-movie-poster class="card-img-top" [movie]="movie"></jhi-movie-poster>
+        <jhi-movie-poster [height]="350" class="card-img-top" [movie]="movie"></jhi-movie-poster>
         <div class="card-body">
             <h3 class="card-title">{{movie.title}} - {{movie.year}}</h3>
             <p class="card-text">{{(movie.plot || '').substr(0, 50)}}...</p>

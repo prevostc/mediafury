@@ -6,14 +6,10 @@ This application was generated using JHipster 4.14.0, you can find documentation
 
 # todo
 
-* fix the categories bug (missing categories in prod)
 * Specific DTO for detail and list pages (too much info fetch in list page)
 * create an angular category-select component (for movie edit and list)
 * avoid leaking query abstraction for angular query services
-* fix spring unit test independence
 * material design ?
-* random movie loading animation
-* fix poster size on list and details pages
 * click on fury or home reloads fury
 * admin vote changes ELO OR admin vote picks movies OR disable admin vote
 * Special Podium-Like ranking page (only sho the top 3)
